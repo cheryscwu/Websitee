@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Implementation Plan | Saibai Island Water & Sanitation Project</title>
+
+  <style>
+    :root{--brand:#004d40;--brand-2:#00796b;--bg:#f7faf9;--ink:#1f2937}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+    header{background:var(--brand);color:#fff;position:sticky;top:0;z-index:999}
+    nav ul{margin:0;padding:0;display:flex;align-items:center;list-style:none}
+    nav li{position:relative}
+    nav a{display:block;padding:14px 18px;color:#fff;text-decoration:none;font-weight:600}
+    nav li:hover>a{background:var(--brand-2)}
+    .dropdown-content{display:none;position:absolute;background:var(--brand);min-width:220px;box-shadow:0 6px 18px rgba(0,0,0,.18)}
+    .dropdown-content a{padding:12px 14px;display:block;font-weight:500}
+    nav li:hover>.dropdown-content{display:block}
+    .sub-dropdown{position:relative}
+    .sub-dropdown-content{display:none;position:absolute;left:220px;top:0;background:#00695c;min-width:220px;box-shadow:0 6px 18px rgba(0,0,0,.18)}
+    .sub-dropdown:hover .sub-dropdown-content{display:block}
+    .hero{background:linear-gradient(135deg,rgba(0,77,64,.88),rgba(0,121,107,.72)),url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;color:#fff;padding:70px 24px;text-align:center}
+    .hero h1{margin:0 0 10px;font-size:32px}
+    .breadcrumb{font-size:14px;opacity:.9}
+    .breadcrumb a{color:#b2dfdb;text-decoration:none}.breadcrumb .sep{margin:0 .4rem;opacity:.7}
+    main{max-width:1100px;margin:40px auto;padding:0 18px 60px}
+    section{background:#fff;border-radius:14px;padding:30px;margin-bottom:26px;box-shadow:0 10px 22px rgba(0,0,0,.08)}
+    .callout{border-left:4px solid var(--brand-2);background:#ecfffd;padding:14px 16px;border-radius:8px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+    .card{background:#fff;border-radius:14px;box-shadow:0 10px 22px rgba(0,0,0,.08);padding:22px;border:1px solid #e7f3f2;transition:.25s;cursor:pointer}
+    .card:hover{transform:translateY(-6px);box-shadow:0 14px 28px rgba(0,0,0,.16)}
+    .card h3{margin:0 0 8px;color:var(--brand)}
+    footer{background:var(--brand);color:#fff;text-align:center;padding:18px;font-size:14px}
+    
+    /* Implementation Plan Specific Styles */
+    .timeline-container {
+      position: relative;
+      max-width: 1000px;
+      margin: 40px auto;
+    }
+    
+    .timeline {
+      position: relative;
+      padding-left: 30px;
+    }
+    
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 15px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--brand-2);
+    }
+    
+    .timeline-item {
+      position: relative;
+      margin-bottom: 30px;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    
+    .timeline-item.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -38px;
+      top: 24px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--brand);
+      border: 3px solid var(--bg);
+    }
+    
+    .timeline-date {
+      font-weight: bold;
+      color: var(--brand);
+      margin-bottom: 8px;
+      font-size: 1.1rem;
+    }
+    
+    .timeline-content h3 {
+      margin-top: 0;
+      color: var(--brand);
+      border-bottom: 2px solid #e7f3f2;
+      padding-bottom: 8px;
+    }
+    
+    .stakeholder-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+    
+    .stakeholder-card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      border-top: 4px solid var(--brand-2);
+      transition: transform 0.3s ease;
+    }
+    
+    .stakeholder-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .stakeholder-card h3 {
+      margin-top: 0;
+      color: var(--brand);
+    }
+    
+    .phase-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+    
+    .phase-card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      border-left: 4px solid var(--brand-2);
+      transition: transform 0.3s ease;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    
+    .phase-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .phase-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .phase-card h3 {
+      margin-top: 0;
+      color: var(--brand);
+      border-bottom: 2px solid #e7f3f2;
+      padding-bottom: 8px;
+    }
+    
+    .phase-card ul {
+      padding-left: 20px;
+    }
+    
+    .phase-card li {
+      margin-bottom: 8px;
+      position: relative;
+    }
+    
+    .phase-card li::before {
+      content: "✓";
+      color: var(--brand);
+      font-weight: bold;
+      margin-right: 8px;
+    }
+    
+    .key-metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .metric {
+      text-align: center;
+      padding: 15px;
+      background: #f0f9f8;
+      border-radius: 8px;
+      transition: transform 0.3s ease;
+    }
+    
+    .metric:hover {
+      transform: scale(1.05);
+    }
+    
+    .metric-value {
+      font-size: 24px;
+      font-weight: bold;
+      color: var(--brand);
+      margin-bottom: 5px;
+    }
+    
+    .metric-label {
+      font-size: 14px;
+      color: #555;
+    }
+    
+    /* Progress bar styles */
+    .progress-container {
+      margin: 20px 0;
+    }
+    
+    .progress-bar {
+      height: 8px;
+      background: #e0e0e0;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: var(--brand);
+      border-radius: 4px;
+      width: 0;
+      transition: width 1.5s ease-in-out;
+    }
+    
+    .progress-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 5px;
+      font-size: 0.9rem;
+      color: #666;
+    }
+    
+    /* Tab system for phases */
+    .phase-tabs {
+      display: flex;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .phase-tab {
+      padding: 12px 20px;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.3s ease;
+    }
+    
+    .phase-tab.active {
+      border-bottom: 3px solid var(--brand);
+      color: var(--brand);
+      font-weight: bold;
+    }
+    
+    .phase-content {
+      display: none;
+    }
+    
+    .phase-content.active {
+      display: block;
+    }
+    
+    /* Milestone styles */
+    .milestone-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .milestone {
+      background: #f9f9f9;
+      border-radius: 8px;
+      padding: 15px;
+      border-left: 4px solid var(--brand-2);
+    }
+    
+    .milestone h4 {
+      margin-top: 0;
+      color: var(--brand);
+    }
+    
+    /* Animation classes */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    /* Section headers */
+    section h2 {
+      color: var(--brand);
+      border-bottom: 2px solid #e7f3f2;
+      padding-bottom: 10px;
+      margin-top: 0;
+    }
+  </style>
+
+</head>
+<body>
+
+<header>
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+
+      <li>
+        <a href="research.html">Research</a>
+        <div class="dropdown-content">
+          <a href="background.html">Background</a>
+          <a href="problem-description.html">Problem Description</a>
+        </div>
+      </li>
+
+      <li>
+        <a href="#">Design</a>
+        <div class="dropdown-content">
+          <div class="sub-dropdown">
+            <a href="design-options.html">Design Solution Option ▸</a>
+            <div class="sub-dropdown-content">
+              <a href="solution1.html">Solution 1</a>
+              <a href="solution2.html">Solution 2</a>
+              <a href="solution3.html">Solution 3</a>
+            </div>
+          </div>
+          <div class="sub-dropdown">
+            <a href="design-selection.html">Design Selection ▸</a>
+            <div class="sub-dropdown-content">
+              <a href="selectionA.html">Solution A</a>
+              <a href="selectionB.html">Solution B</a>
+              <a href="selectionC.html">Solution C</a>
+            </div>
+          </div>
+          <a href="detaileddesign.html">Detailed Design</a>
+          <a href="prototype.html">Prototype</a>
+        </div>
+      </li>
+
+      <li>
+        <a href="#">Execution</a>
+        <div class="dropdown-content">
+          <a href="implementation.html">Implementation Plan</a>
+          <a href="cost.html">Cost Analysis</a>
+        </div>
+      </li>
+
+      <li>
+        <a href="#">Insights</a>
+        <div class="dropdown-content">
+          <a href="other.html">Other Considerations</a>
+          <a href="recommend.html">Recommendations</a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<div class="hero">
+  <h1>Implementation Plan</h1>
+  <div class="breadcrumb">
+    <a href="index.html">Home</a> <span class="sep">›</span> Execution › Implementation Plan
+  </div>
+</div>
+
+<main>
+  <section class="fade-in">
+    <h2>Overview</h2>
+    <p>The implementation of the dual water system is designed to promote sustainable construction, community participation, and long-term management. Collaboration between the Torres Strait Island Regional Council (TSIRC), Engineers Without Borders (EWB), and Saibai Island residents will ensure the system is both technically sound and community-driven.</p>
+    
+    <div class="progress-container">
+      <div class="progress-bar">
+        <div class="progress-fill" id="overallProgress"></div>
+      </div>
+      <div class="progress-labels">
+        <span>Start (Month 0)</span>
+        <span>Mid-point (Month 9)</span>
+        <span>Completion (Month 18)</span>
+      </div>
+    </div>
+    
+    <div class="key-metrics">
+      <div class="metric">
+        <div class="metric-value">18 Months</div>
+        <div class="metric-label">Implementation Timeline</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">3 Key Phases</div>
+        <div class="metric-label">Project Structure</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">&lt; 1 NTU</div>
+        <div class="metric-label">Water Quality Target</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">100%</div>
+        <div class="metric-label">Community Involvement</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="fade-in">
+    <h2>Project Timeline</h2>
+    <div class="timeline-container">
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-date">Months 1-4</div>
+          <div class="timeline-content">
+            <h3>Construction and Community Training</h3>
+            <p>The non-potable water system will involve installing leaf guards and gutters on rooftops to collect rainwater into sealed storage tanks. Using locally sourced materials will simplify future maintenance and reduce replacement costs.</p>
+            <p>TSIRC technicians and EWB volunteers will facilitate hands-on training sessions to equip residents with practical skills in cleaning leaf guards, inspecting pipe connections, and managing storage tanks.</p>
+            <p>For the potable water system, lagoon water will pass through a settling tank, multi-layer filtration, an ultrafiltration membrane, and a UV disinfection unit. Community members will receive training on maintaining filters, replacing membranes, and operating the UV disinfection system safely.</p>
+            
+            <div class="milestone-grid">
+              <div class="milestone">
+                <h4>Key Milestone 1</h4>
+                <p>Installation of rainwater collection systems complete</p>
+              </div>
+              <div class="milestone">
+                <h4>Key Milestone 2</h4>
+                <p>Initial community training sessions completed</p>
+              </div>
+              <div class="milestone">
+                <h4>Key Milestone 3</h4>
+                <p>Potable water filtration system installed</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="timeline-item">
+          <div class="timeline-date">Months 5-10</div>
+          <div class="timeline-content">
+            <h3>System Introduction, Management, and Evaluation</h3>
+            <p>The system will be introduced through workshops and demonstration sessions that allow residents to understand and operate the technology. Illustrated instruction manuals in the local language will support daily use and maintenance.</p>
+            <p>Regular maintenance, such as monthly filter cleaning and annual inspections, will be coordinated by the TSIRC environmental health team. Routine turbidity testing will ensure water quality remains below 1 NTU, while community feedback and annual sustainability reviews will evaluate system effectiveness and satisfaction.</p>
+            
+            <div class="milestone-grid">
+              <div class="milestone">
+                <h4>Key Milestone 1</h4>
+                <p>Illustrated instruction manuals distributed</p>
+              </div>
+              <div class="milestone">
+                <h4>Key Milestone 2</h4>
+                <p>Regular maintenance schedule established</p>
+              </div>
+              <div class="milestone">
+                <h4>Key Milestone 3</h4>
+                <p>First water quality assessment completed</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="timeline-item">
+          <div class="timeline-date">Months 11-18</div>
+          <div class="timeline-content">
+            <h3>Community Ownership, Future Impact, and Repair</h3>
+            <p>Over time, operational responsibility will be transferred to trained community teams, fostering independence and long-term ownership. The project will enhance water security, public health, and local technical capacity.</p>
+            <p>Minor faults will be repaired by community technicians using available toolkits, while TSIRC will assist with more complex technical issues.</p>
+            
+            <div class="milestone-grid">
+              <div class="milestone">
+                <h4>Key Milestone 1</h4>
+                <p>Operational responsibility transferred to community</p>
+              </div>
+              <div class="milestone">
+                <h4>Key Milestone 2</h4>
+                <p>Community repair teams established</p>
+              </div>
+              <div class="milestone">
+                <h4>Key Milestone 3</h4>
+                <p>Final project evaluation completed</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="fade-in">
+    <h2>Implementation Phases</h2>
+    
+    <div class="phase-tabs">
+      <div class="phase-tab active" data-tab="phase1">Phase 1: Construction & Training</div>
+      <div class="phase-tab" data-tab="phase2">Phase 2: System Introduction & Management</div>
+      <div class="phase-tab" data-tab="phase3">Phase 3: Community Ownership & Repair</div>
+    </div>
+    
+    <div class="phase-content active" id="phase1">
+      <div class="phase-container">
+        <div class="phase-card">
+          <h3>Non-Potable System Installation</h3>
+          <ul>
+            <li>Install leaf guards and gutters on rooftops</li>
+            <li>Set up sealed rainwater storage tanks</li>
+            <li>Use locally sourced materials for sustainability</li>
+            <li>Train residents in cleaning and maintenance</li>
+          </ul>
+        </div>
+        
+        <div class="phase-card">
+          <h3>Potable System Installation</h3>
+          <ul>
+            <li>Install settling tanks for lagoon water</li>
+            <li>Set up multi-layer filtration systems</li>
+            <li>Install ultrafiltration membranes</li>
+            <li>Implement UV disinfection units</li>
+          </ul>
+        </div>
+        
+        <div class="phase-card">
+          <h3>Community Training</h3>
+          <ul>
+            <li>Hands-on training sessions with TSIRC and EWB</li>
+            <li>Practical skills development for maintenance</li>
+            <li>Safety protocols for system operation</li>
+            <li>Problem-solving and troubleshooting techniques</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+    <div class="phase-content" id="phase2">
+      <div class="phase-container">
+        <div class="phase-card">
+          <h3>System Introduction</h3>
+          <ul>
+            <li>Community workshops and demonstrations</li>
+            <li>Illustrated instruction manuals in local language</li>
+            <li>Daily use guidance and best practices</li>
+            <li>Emergency procedures and contacts</li>
+          </ul>
+        </div>
+        
+        <div class="phase-card">
+          <h3>Management Protocols</h3>
+          <ul>
+            <li>Monthly filter cleaning schedules</li>
+            <li>Annual system inspections</li>
+            <li>TSIRC environmental health team coordination</li>
+            <li>Documentation and record keeping</li>
+          </ul>
+        </div>
+        
+        <div class="phase-card">
+          <h3>Evaluation Framework</h3>
+          <ul>
+            <li>Regular turbidity testing (<1 NTU target)</li>
+            <li>Community feedback collection</li>
+            <li>Annual sustainability reviews</li>
+            <li>System effectiveness assessment</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+    <div class="phase-content" id="phase3">
+      <div class="phase-container">
+        <div class="phase-card">
+          <h3>Community Ownership</h3>
+          <ul>
+            <li>Transfer operational responsibility to community teams</li>
+            <li>Foster independence and long-term ownership</li>
+            <li>Establish community management committees</li>
+            <li>Develop local leadership for system oversight</li>
+          </ul>
+        </div>
+        
+        <div class="phase-card">
+          <h3>Impact Assessment</h3>
+          <ul>
+            <li>Enhanced water security evaluation</li>
+            <li>Public health impact measurement</li>
+            <li>Local technical capacity assessment</li>
+            <li>Economic benefits analysis</li>
+          </ul>
+        </div>
+        
+        <div class="phase-card">
+          <h3>Repair and Maintenance</h3>
+          <ul>
+            <li>Community technicians for minor repairs</li>
+            <li>Toolkits available for common issues</li>
+            <li>TSIRC support for complex technical problems</li>
+            <li>Ongoing training and skill development</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="fade-in">
+    <h2>Stakeholder Roles & Responsibilities</h2>
+    <div class="stakeholder-grid">
+      <div class="stakeholder-card">
+        <h3>Torres Strait Island Regional Council (TSIRC)</h3>
+        <p>Coordinates implementation, provides technical oversight, assists with complex technical issues, and leads the environmental health team for regular maintenance.</p>
+      </div>
+      
+      <div class="stakeholder-card">
+        <h3>Engineers Without Borders (EWB)</h3>
+        <p>Provides technical expertise, facilitates training sessions, supports system design refinement, and assists with capacity building.</p>
+      </div>
+      
+      <div class="stakeholder-card">
+        <h3>Saibai Island Residents</h3>
+        <p>Active participation in construction and training, daily operation and maintenance of systems, providing feedback, and gradually taking ownership of the water systems.</p>
+      </div>
+      
+      <div class="stakeholder-card">
+        <h3>Community Technicians</h3>
+        <p>Trained residents responsible for minor repairs using available toolkits, routine maintenance tasks, and serving as local points of contact for system issues.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="fade-in">
+    <h2>Monitoring & Evaluation Framework</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Water Quality Monitoring</h3>
+        <p>Regular turbidity testing to ensure water quality remains below 1 NTU target. Additional testing for biological contaminants as needed.</p>
+      </div>
+      <div class="card">
+        <h3>System Performance</h3>
+        <p>Tracking system uptime, maintenance needs, and component lifespan to assess reliability and identify improvement areas.</p>
+      </div>
+      <div class="card">
+        <h3>Community Satisfaction</h3>
+        <p>Regular feedback collection through surveys and community meetings to gauge satisfaction and identify concerns.</p>
+      </div>
+      <div class="card">
+        <h3>Capacity Building</h3>
+        <p>Assessment of local technical skills development and community ownership of the water systems.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="callout fade-in">
+    <p><strong>Expected Impact:</strong> The project will enhance water security, public health, and local technical capacity. Minor faults will be repaired by community technicians using available toolkits, while TSIRC will assist with more complex technical issues.</p>
+  </section>
+</main>
+
+<footer>© 2025 Team A — Saibai Island Alternative Water Harvesting Project</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Progress bar animation
+    const progressBar = document.getElementById('overallProgress');
+    setTimeout(() => {
+      progressBar.style.width = '100%';
+    }, 500);
+    
+    // Timeline item animations
+    const timelineItems = document.querySelectorAll('.timeline-item');
+    const timelineObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, 200 * Array.from(timelineItems).indexOf(entry.target));
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    timelineItems.forEach(item => {
+      timelineObserver.observe(item);
+    });
+    
+    // Phase card animations
+    const phaseCards = document.querySelectorAll('.phase-card');
+    const phaseObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, 100 * Array.from(phaseCards).indexOf(entry.target));
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    phaseCards.forEach(card => {
+      phaseObserver.observe(card);
+    });
+    
+    // Fade-in animations for sections
+    const fadeElements = document.querySelectorAll('.fade-in');
+    const fadeObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    fadeElements.forEach(element => {
+      fadeObserver.observe(element);
+    });
+    
+    // Tab functionality
+    const tabs = document.querySelectorAll('.phase-tab');
+    const contents = document.querySelectorAll('.phase-content');
+    
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        // Remove active class from all tabs and contents
+        tabs.forEach(t => t.classList.remove('active'));
+        contents.forEach(c => c.classList.remove('active'));
+        
+        // Add active class to clicked tab and corresponding content
+        tab.classList.add('active');
+        const tabId = tab.getAttribute('data-tab');
+        document.getElementById(tabId).classList.add('active');
+      });
+    });
+    
+    // Card hover effects
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        card.style.transform = 'translateY(-10px)';
+      });
+      
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'translateY(0)';
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

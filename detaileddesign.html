@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Detailed Design | Saibai Island Water & Sanitation Project</title>
+
+<style>
+  :root{--brand:#004d40;--brand-2:#00796b;--bg:#f7faf9;--ink:#1f2937;--muted:#6b7280}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+
+  /* ====== 导航栏（与 prototype 一致高度与样式） ====== */
+  header{background:var(--brand);color:#fff;position:sticky;top:0;z-index:999}
+  nav ul{margin:0;padding:0;display:flex;align-items:center;list-style:none}
+  nav li{position:relative}
+  nav a{
+    display:block;padding:14px 18px;color:#fff;text-decoration:none;
+    font-weight:600;line-height:1.2;
+  }
+  nav li:hover>a{background:var(--brand-2)}
+  .dropdown-content{
+    display:none;position:absolute;background:var(--brand);
+    min-width:220px;box-shadow:0 6px 18px rgba(0,0,0,.18)
+  }
+  .dropdown-content a{padding:12px 14px;display:block;font-weight:500;line-height:1.2}
+  nav li:hover>.dropdown-content{display:block}
+  .sub-dropdown{position:relative}
+  .sub-dropdown-content{
+    display:none;position:absolute;left:220px;top:0;background:#00695c;
+    min-width:220px;box-shadow:0 6px 18px rgba(0,0,0,.18)
+  }
+  .sub-dropdown:hover .sub-dropdown-content{display:block}
+
+  /* ===== 标题背景（与 prototype 相同） ===== */
+  .hero{
+    background:linear-gradient(135deg,rgba(0,77,64,.88),rgba(0,121,107,.72)),
+               url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;
+    color:#fff;padding:70px 24px;text-align:center
+  }
+  .hero h1{margin:0 0 10px;font-size:32px}
+  .breadcrumb{font-size:14px;opacity:.9}
+  .breadcrumb a{color:#b2dfdb;text-decoration:none}
+  .breadcrumb .sep{margin:0 .4rem;opacity:.7}
+
+  /* ===== 页面内容（原有样式） ===== */
+  :root{
+    --primary:#2e7d6e; --primary-light:#4da896; --primary-dark:#1b5e4f;
+    --secondary:#4a9c8d; --secondary-light:#7dc5b5; --accent:#6bb39b; --accent-light:#9dd4c3;
+    --card-bg:#ffffff; --ink2:#2d4a43; --ink-light:#5a7a72; --border:#d1e7e1;
+  }
+  main{max-width:1100px;margin:40px auto;padding:0 18px 60px}
+  section{background:var(--card-bg);border-radius:12px;padding:32px;margin-bottom:30px;box-shadow:0 8px 20px rgba(0,0,0,.04);transition:transform .3s ease,box-shadow .3s ease;border:1px solid var(--border)}
+  section:hover{transform:translateY(-5px);box-shadow:0 12px 25px rgba(0,0,0,.08)}
+  .callout{border-left:4px solid var(--accent);background:linear-gradient(to right,rgba(107,179,155,.08),transparent);padding:20px 24px;border-radius:8px;animation:fadeIn 1s ease;font-size:18px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px}
+  .card{background:var(--card-bg);border-radius:12px;box-shadow:0 8px 20px rgba(0,0,0,.04);padding:24px;border:1px solid var(--border);transition:all .3s ease;cursor:pointer;position:relative;overflow:hidden}
+  .card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--secondary);transform:scaleY(0);transition:transform .3s ease}
+  .card:hover{transform:translateY(-8px);box-shadow:0 15px 30px rgba(0,0,0,.1)}
+  .card:hover::before{transform:scaleY(1)}
+  .card h3{margin:0 0 12px;color:var(--primary);font-size:20px}
+  footer{background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#fff;text-align:center;padding:24px;font-size:15px}
+
+  .process-step{margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--border);animation:slideIn .6s ease forwards;opacity:0}
+  .process-step:nth-child(1){animation-delay:.1s}.process-step:nth-child(2){animation-delay:.2s}
+  .process-step:nth-child(3){animation-delay:.3s}.process-step:nth-child(4){animation-delay:.4s}
+  .feature-icon{display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;background:linear-gradient(135deg,var(--secondary),var(--secondary-light));color:#fff;border-radius:50%;margin-right:15px;font-weight:bold;font-size:20px;box-shadow:0 4px 8px rgba(74,156,141,.3)}
+  .system-diagram{max-width:100%;height:auto;border-radius:10px;margin:20px 0;box-shadow:0 6px 15px rgba(0,0,0,.05);transition:transform .3s ease;border:1px solid var(--border)}
+  .system-diagram:hover{transform:scale(1.02)}
+  .maintenance-list{columns:2;column-gap:30px}
+  .highlight-box{background:linear-gradient(135deg,rgba(107,179,155,.08),rgba(157,212,195,.05));border-left:4px solid var(--accent);padding:24px;border-radius:10px;margin:24px 0;box-shadow:0 4px 12px rgba(0,0,0,.03)}
+  .step-indicator{display:flex;justify-content:space-between;margin:30px 0;position:relative}
+  .step-indicator::before{content:'';position:absolute;top:15px;left:0;right:0;height:2px;background:var(--border);z-index:1}
+  .step{position:relative;z-index:2;text-align:center;flex:1}
+  .step-number{width:32px;height:32px;border-radius:50%;background:var(--secondary);color:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-weight:bold;box-shadow:0 4px 8px rgba(74,156,141,.3);transition:all .3s ease}
+  .step.active .step-number{background:var(--accent);transform:scale(1.2)}
+  .benefit-tag{display:inline-block;background:linear-gradient(135deg,var(--accent),var(--accent-light));color:#fff;padding:8px 16px;border-radius:20px;font-size:14px;margin:5px;font-weight:600;box-shadow:0 4px 8px rgba(107,179,155,.3)}
+  h2{color:var(--primary);margin-top:0;padding-bottom:10px;border-bottom:2px solid rgba(46,125,110,.1)}
+  h3{color:var(--primary-dark);display:flex;align-items:center}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}} @keyframes slideIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+  @media (max-width:768px){.maintenance-list{columns:1}.step-indicator{flex-direction:column;align-items:flex-start}.step-indicator::before{display:none}.step{margin-bottom:15px;display:flex;align-items:center}.step-number{margin:0 10px 0 0}.hero h1{font-size:32px}section{padding:24px 20px}}
+
+  /* === Maintenance Procedures 美化样式（新增） === */
+  .maint-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:16px;margin-top:12px
+  }
+  .maint-tier{
+    background:var(--card-bg);border:1px solid var(--border);border-radius:14px;
+    padding:18px 18px 14px;box-shadow:0 8px 20px rgba(0,0,0,.04);
+    transition:transform .25s ease, box-shadow .25s ease, opacity .3s ease;
+    position:relative;overflow:hidden;opacity:0;transform:translateY(8px)
+  }
+  .maint-tier.show{opacity:1;transform:none}
+  .maint-tier::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(107,179,155,.08),transparent);
+    opacity:0;transition:opacity .25s
+  }
+  .maint-tier:hover{transform:translateY(-6px);box-shadow:0 14px 28px rgba(0,0,0,.1)}
+  .maint-tier:hover::after{opacity:.6}
+
+  .maint-title{margin:0 0 6px;display:flex;align-items:center;gap:10px;color:var(--primary-dark)}
+  .maint-badge{
+    display:inline-flex;align-items:center;gap:8px;
+    background:linear-gradient(135deg,var(--secondary),var(--secondary-light));
+    color:#fff;padding:6px 12px;border-radius:999px;font-weight:700;font-size:.95rem;
+    box-shadow:0 4px 10px rgba(74,156,141,.25)
+  }
+
+  .maint-list{list-style:none;margin:10px 0 0;padding:0}
+  .maint-list li{
+    position:relative;padding-left:26px;margin:8px 0;color:var(--ink-light)
+  }
+  .maint-list li::before{
+    content:"✓";position:absolute;left:0;top:1px;width:20px;height:20px;border-radius:50%;
+    background:#eafff7;color:#0d6b61;font-weight:900;font-size:12px;line-height:16px;
+    display:flex;align-items:center;justify-content:center;border:2px solid #10b981
+  }
+
+  .maint-tier[data-tier="daily"]{border-left:4px solid #10b981}
+  .maint-tier[data-tier="weekly"]{border-left:4px solid #14b8a6}
+  .maint-tier[data-tier="monthly"]{border-left:4px solid #22c55e}
+  .maint-tier[data-tier="qtr"]{border-left:4px solid #06b6d4}
+  .maint-tier[data-tier="annual"]{border-left:4px solid #0ea5e9}
+</style>
+</head>
+<body>
+
+<!-- ===== 导航（5 个一级菜单，与 prototype 同样高度） ===== -->
+<header>
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+
+      <li>
+        <a href="research.html">Research</a>
+        <div class="dropdown-content">
+          <a href="background.html">Background</a>
+          <a href="problem-description.html">Problem Description</a>
+        </div>
+      </li>
+
+      <li>
+        <a href="#">Design</a>
+        <div class="dropdown-content">
+          <div class="sub-dropdown">
+            <a href="design-options.html">Design Solution Option ▸</a>
+            <div class="sub-dropdown-content">
+              <a href="solution1.html">Solution 1</a>
+              <a href="solution2.html">Solution 2</a>
+              <a href="solution3.html">Solution 3</a>
+            </div>
+          </div>
+          <div class="sub-dropdown">
+            <a href="design-selection.html">Design Selection ▸</a>
+            <div class="sub-dropdown-content">
+              <a href="selectionA.html">Solution A</a>
+              <a href="selectionB.html">Solution B</a>
+              <a href="selectionC.html">Solution C</a>
+            </div>
+          </div>
+          <a href="detaileddesign.html">Detailed Design</a>
+          <a href="prototype.html">Prototype</a>
+        </div>
+      </li>
+
+      <li>
+        <a href="#">Execution</a>
+        <div class="dropdown-content">
+          <a href="implementation.html">Implementation Plan</a>
+          <a href="cost.html">Cost Analysis</a>
+        </div>
+      </li>
+
+      <li>
+        <a href="#">Insights</a>
+        <div class="dropdown-content">
+          <a href="other.html">Other Considerations</a>
+          <a href="recommend.html">Recommendations</a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<!-- ===== 标题背景（与 prototype 相同） ===== -->
+<div class="hero">
+  <h1>Detailed Design</h1>
+  <div class="breadcrumb">
+    <a href="index.html">Home</a> <span class="sep">›</span> Design <span class="sep">›</span> Detailed Design
+  </div>
+</div>
+
+<main>
+  <!-- 原有内容 -->
+  <section class="callout">
+    <p>Our design approach is based on <strong>differentiated treatments</strong> for rainwater and lagoon water, providing appropriate purification for each source according to its intended use.</p>
+  </section>
+
+  <section>
+    <h2>Overview</h2>
+    <p>Our entire design approach is based on <strong>differentiated treatments</strong>, providing appropriate water purification systems for different water sources and uses on Saibai Island. This ensures efficient resource use while meeting the community's diverse water needs.</p>
+    <div class="highlight-box">
+      <h3>Key Benefits</h3>
+      <span class="benefit-tag">Cost-Effective</span>
+      <span class="benefit-tag">Sustainable</span>
+      <span class="benefit-tag">Community-Owned</span>
+      <span class="benefit-tag">Easy Maintenance</span>
+    </div>
+  </section>
+
+  <section>
+    <h2>Rainwater Harvesting System</h2>
+    <div class="process-step">
+      <h3><span class="feature-icon">1</span>Initial Filtration</h3>
+      <p>We implemented a unique system to prevent debris from flowing down the eaves along with the rainwater. This system's main component is a <strong>leaf guard</strong> that allows rainwater to flow down while trapping debris like leaves on the eaves' parapet.</p>
+    </div>
+    <div class="process-step">
+      <h3><span class="feature-icon">2</span>Storage and Usage</h3>
+      <p>After initial filtration, the water is sent to a dedicated water tank for immediate use in tasks like plant fertilization and cleaning. The <strong>polyethylene filter</strong> provides long-term stability and can be easily cleaned weekly by island residents.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Lagoon Water Purification System</h2>
+    <p>For lagoon water which must satisfy direct drinking standards, we employ a sophisticated multi-stage purification procedure.</p>
+
+    <div class="step-indicator">
+      <div class="step active"><div class="step-number">1</div><div>Sedimentation</div></div>
+      <div class="step"><div class="step-number">2</div><div>Filtration</div></div>
+      <div class="step"><div class="step-number">3</div><div>Ultra Filtration</div></div>
+      <div class="step"><div class="step-number">4</div><div>UV Sterilization</div></div>
+    </div>
+
+    <div class="process-step">
+      <h3><span class="feature-icon">1</span>Circular Sedimentation Tank</h3>
+      <p>The process begins in a cylindrical sedimentation tank with a conical bottom. Water enters from the side, creating <strong>swirling currents</strong> that use centrifugal force to separate heavy particles like silt.</p>
+    </div>
+    <div class="process-step">
+      <h3><span class="feature-icon">2</span>Mixed Filtration System</h3>
+      <p>Water then passes through three consecutive standard ten-inch filter cartridges:</p>
+      <ul>
+        <li><strong>First cartridge:</strong> 5-micron PP fiber filter that collects remaining suspended solids</li>
+        <li><strong>Second cartridge:</strong> Compressed activated alumina that absorbs organic compounds, chlorine, and odors</li>
+        <li><strong>Third cartridge:</strong> Granular activated alumina for further purification</li>
+      </ul>
+    </div>
+    <div class="process-step">
+      <h3><span class="feature-icon">3</span>Ultra Filtration Membrane Assembly</h3>
+      <p>This third purification barrier uses hollow fiber ultra filter membranes with <strong>0.01 micron pores</strong> that are impervious to viruses, bacteria, and colloids, maintaining effluent turbidity consistently below 1 NTU. The system includes a built-in backwashing feature that periodically removes impurities from the membrane surface.</p>
+    </div>
+    <div class="process-step">
+      <h3><span class="feature-icon">4</span>UV Sterilization</h3>
+      <p>The final stage occurs in a sealed UV sterilization chamber where short-wave ultraviolet light disinfects the water by disrupting microbial DNA. This <strong>physical cleaning process</strong> requires no chemicals, eliminating the risk of further contamination.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Materials and System Design</h2>
+    <div class="grid">
+      <div class="card"><h3>Durable Piping</h3><p>All water supply tubes are made from <strong>UPVC</strong>, which is long-lasting and corrosion-resistant.</p></div>
+      <div class="card"><h3>Bypass System</h3><p>All major treatment units include <strong>bypass piping</strong>, allowing filter media changes or equipment maintenance without stopping the entire system.</p></div>
+      <div class="card"><h3>Easy Maintenance</h3><p>The system is designed with <strong>comprehensive maintenance procedures</strong> that can be performed by local operators.</p></div>
+    </div>
+  </section>
+
+  <!-- ========= Maintenance Procedures（已美化） ========= -->
+  <section>
+    <h2>Maintenance Procedures</h2>
+    <div class="maint-grid">
+      <article class="maint-tier" data-tier="daily">
+        <h3 class="maint-title"><span class="maint-badge">Daily</span></h3>
+        <ul class="maint-list">
+          <li>Leak checks</li>
+        </ul>
+      </article>
+
+      <article class="maint-tier" data-tier="weekly">
+        <h3 class="maint-title"><span class="maint-badge">Weekly</span></h3>
+        <ul class="maint-list">
+          <li>Filter purification</li>
+          <li>Leaf guard cleaning</li>
+        </ul>
+      </article>
+
+      <article class="maint-tier" data-tier="monthly">
+        <h3 class="maint-title"><span class="maint-badge">Monthly</span></h3>
+        <ul class="maint-list">
+          <li>Sludge elimination from sedimentation tank</li>
+        </ul>
+      </article>
+
+      <article class="maint-tier" data-tier="qtr">
+        <h3 class="maint-title"><span class="maint-badge">Every 3–6 Months</span></h3>
+        <ul class="maint-list">
+          <li>Filter replacement at each level</li>
+          <li>UV lamp checks</li>
+        </ul>
+      </article>
+
+      <article class="maint-tier" data-tier="annual">
+        <h3 class="maint-title"><span class="maint-badge">Annually</span></h3>
+        <ul class="maint-list">
+          <li>Chemical cleaning of ultrafiltration membranes</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <h2>Monitoring and Operation</h2>
+    <p>To ensure effective monitoring, we recommend enhanced standards for operators, including regular reporting of final water quality standards. This allows us to monitor the effectiveness of the purification process and use data to demonstrate the system's reliability.</p>
+    <div class="highlight-box">
+      <p>The entire design is practical for <strong>widespread implementation</strong> on Saibai Island, with special filter parts and unit membranes readily available for replacement when needed.</p>
+    </div>
+  </section>
+</main>
+
+<footer>© 2025 Team A — Saibai Island Alternative Water Harvesting Project</footer>
+
+<script>
+  // Step indicator animation
+  document.addEventListener('DOMContentLoaded', function(){
+    const steps=document.querySelectorAll('.step');
+    steps.forEach((s,i)=>setTimeout(()=>s.classList.add('active'), i*300));
+    document.querySelectorAll('.card').forEach(c=>{
+      c.addEventListener('mouseenter',()=>c.style.transform='translateY(-8px)');
+      c.addEventListener('mouseleave',()=>c.style.transform='translateY(0)');
+    });
+  });
+
+  // Maintenance cards reveal on scroll
+  const mIO=new IntersectionObserver(es=>{
+    es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('show'); mIO.unobserve(e.target); }});
+  },{threshold:.2});
+  document.querySelectorAll('.maint-tier').forEach(el=>mIO.observe(el));
+</script>
+
+</body>
+</html>

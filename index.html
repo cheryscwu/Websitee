@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Saibai Island Water & Sanitation Improvement Project — Home | Saibai Island Water & Sanitation Project</title>
+
+  <style>
+    :root {
+      --brand: #004d40;
+      --brand-2: #00796b;
+      --bg: #f7faf9;
+      --ink: #1f2937;
+      --success: #4caf50;
+      --warning: #ff9800;
+      --danger: #f44336;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    body {
+      margin: 0;
+      font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+    }
+    
+    header {
+      background: var(--brand);
+      color: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+    
+    nav ul {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      list-style: none;
+    }
+    
+    nav li {
+      position: relative;
+    }
+    
+    nav a {
+      display: block;
+      padding: 14px 18px;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    
+    nav li:hover > a {
+      background: var(--brand-2);
+    }
+    
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background: var(--brand);
+      min-width: 220px;
+      box-shadow: 0 6px 18px rgba(0,0,0,.18);
+    }
+    
+    .dropdown-content a {
+      padding: 12px 14px;
+      display: block;
+      font-weight: 500;
+    }
+    
+    nav li:hover > .dropdown-content {
+      display: block;
+    }
+    
+    .sub-dropdown {
+      position: relative;
+    }
+    
+    .sub-dropdown-content {
+      display: none;
+      position: absolute;
+      left: 220px;
+      top: 0;
+      background: #00695c;
+      min-width: 220px;
+      box-shadow: 0 6px 18px rgba(0,0,0,.18);
+    }
+    
+    .sub-dropdown:hover .sub-dropdown-content {
+      display: block;
+    }
+    
+    .hero {
+      background: linear-gradient(135deg, rgba(0,77,64,.88), rgba(0,121,107,.72)), url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;
+      color: #fff;
+      padding: 70px 24px;
+      text-align: center;
+    }
+    
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: 32px;
+    }
+    
+    .breadcrumb {
+      font-size: 14px;
+      opacity: .9;
+    }
+    
+    .breadcrumb a {
+      color: #b2dfdb;
+      text-decoration: none;
+    }
+    
+    .breadcrumb .sep {
+      margin: 0 .4rem;
+      opacity: .7;
+    }
+    
+    main {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 18px 60px;
+    }
+    
+    section {
+      background: #fff;
+      border-radius: 14px;
+      padding: 30px;
+      margin-bottom: 26px;
+      box-shadow: 0 10px 22px rgba(0,0,0,.08);
+    }
+    
+    .callout {
+      border-left: 4px solid var(--brand-2);
+      background: #ecfffd;
+      padding: 14px 16px;
+      border-radius: 8px;
+    }
+    
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    
+    .card {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 10px 22px rgba(0,0,0,.08);
+      padding: 22px;
+      border: 1px solid #e7f3f2;
+      transition: .25s;
+      cursor: pointer;
+    }
+    
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 14px 28px rgba(0,0,0,.16);
+    }
+    
+    .card h3 {
+      margin: 0 0 8px;
+      color: var(--brand);
+    }
+    
+    footer {
+      background: var(--brand);
+      color: #fff;
+      text-align: center;
+      padding: 18px;
+      font-size: 14px;
+    }
+    
+    /* New dynamic elements */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    
+    .fade-in.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    /* Problem Stats */
+    .problem-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin: 30px 0;
+    }
+    
+    .stat-card {
+      flex: 1;
+      min-width: 200px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      border: 1px solid #e0f2f1;
+      transition: all 0.3s ease;
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    
+    .stat-value {
+      font-size: 32px;
+      font-weight: bold;
+      margin: 10px 0;
+      color: var(--brand);
+    }
+    
+    .stat-label {
+      font-size: 14px;
+      color: #666;
+    }
+    
+    /* Challenge Cards */
+    .challenge-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin: 30px 0;
+    }
+    
+    .challenge-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      border: 1px solid #e0f2f1;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .challenge-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: var(--brand-2);
+    }
+    
+    .challenge-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    
+    .challenge-card h3 {
+      margin-top: 0;
+      color: var(--brand);
+    }
+    
+    /* Project Goals */
+    .project-goals {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin: 30px 0;
+    }
+    
+    .goal-item {
+      flex: 1;
+      min-width: 200px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      border: 1px solid #e0f2f1;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+    
+    .goal-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    
+    .goal-icon {
+      font-size: 36px;
+      margin-bottom: 15px;
+    }
+    
+    /* Map Visualization */
+    .map-visualization {
+      height: 300px;
+      background: #e0f2f1;
+      border-radius: 12px;
+      margin: 30px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #00695c;
+      font-weight: bold;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .map-visualization::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M10,10 L90,10 L90,90 L10,90 Z" fill="none" stroke="%2300695c" stroke-width="2"/><path d="M20,20 L80,20 L80,80 L20,80 Z" fill="%2300695c" opacity="0.1"/><circle cx="50" cy="50" r="15" fill="%2300695c" opacity="0.3"/><text x="50" y="55" text-anchor="middle" fill="%2300695c" font-size="10">Saibai Island</text></svg>') center/cover no-repeat;
+    }
+    
+    /* Solution Comparison */
+    .solution-comparison {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin: 30px 0;
+    }
+    
+    .solution-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      border: 1px solid #e0f2f1;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+    
+    .solution-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    
+    .solution-card h3 {
+      margin-top: 0;
+      color: var(--brand);
+    }
+    
+    .solution-rating {
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      margin: 10px 0;
+    }
+    
+    .rating-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #e0f2f1;
+    }
+    
+    .rating-dot.filled {
+      background: var(--brand-2);
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .problem-stats, .project-goals {
+        flex-direction: column;
+      }
+    }
+  </style>
+
+</head>
+<body>
+
+<header>
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+
+      <li>
+        <a href="research.html">Research</a>
+        <div class="dropdown-content">
+          <a href="background.html">Background</a>
+          <a href="problem-description.html">Problem Description</a>
+        </div>
+      </li>
+
+      <li>
+        <a href="#">Design</a>
+        <div class="dropdown-content">
+          <div class="sub-dropdown">
+            <a href="design-options.html">Design Solution Option ▸</a>
+            <div class="sub-dropdown-content">
+              <a href="solution1.html">Solution 1</a>
+              <a href="solution2.html">Solution 2</a>
+              <a href="solution3.html">Solution 3</a>
+            </div>
+          </div>
+          <div class="sub-dropdown">
+            <a href="design-selection.html">Design Selection ▸</a>
+            <div class="sub-dropdown-content">
+              <a href="selectionA.html">Solution A</a>
+              <a href="selectionB.html">Solution B</a>
+              <a href="selectionC.html">Solution C</a>
+            </div>
+          </div>
+          <a href="detaileddesign.html">Detailed Design</a>
+          <a href="prototype.html">Prototype</a>
+        </div>
+      </li>
+
+      <li>
+        <a href="#">Execution</a>
+        <div class="dropdown-content">
+          <a href="implementation.html">Implementation Plan</a>
+          <a href="cost.html">Cost Analysis</a>
+        </div>
+      </li>
+
+      <li>
+        <a href="#">Insights</a>
+        <div class="dropdown-content">
+          <a href="other.html">Other Considerations</a>
+          <a href="recommend.html">Recommendations</a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<div class="hero">
+  <h1>Saibai Island Water & Sanitation Improvement Project</h1>
+  <div class="breadcrumb">
+    <a href="index.html">Home</a> <span class="sep">›</span> Home
+  </div>
+</div>
+
+<main>
+  <section class="fade-in">
+    <div class="callout" style="text-align:center">
+      <h2>Design Area 2.1 — Alternative Water Harvesting & Treatment</h2>
+      <p>Addressing freshwater shortages through innovative water collection and purification systems</p>
+    </div>
+  </section>
+
+  <section class="fade-in">
+    <h2>The Water Crisis on Saibai Island</h2>
+    <p>Saibai Island is a small island located in the Torres Strait near the northern tip of Australia, which faces severe freshwater shortages throughout the year. The island is extremely low-lying, with most areas less than one meter above sea level, and it has no rivers or natural freshwater lakes.</p>
+    
+    <div class="map-visualization">
+      Saibai Island - Maximum Elevation: 1.7m above sea level
+    </div>
+    
+    <p>As a result, the local community relies almost entirely on an artificial storage lagoon for its water supply. However, rainfall in the region is highly seasonal, and during the long dry season, stored water often runs out. Most of the island's groundwater has high turbidity (according to the EWB website, the unprocessed underground water on Saibai Island is above 5 NTU) and therefore unsuitable for drinking.</p>
+    
+    <div class="problem-stats">
+      <div class="stat-card">
+        <div class="stat-value">&lt;1m</div>
+        <div class="stat-label">Average Elevation</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">>5 NTU</div>
+        <div class="stat-label">Groundwater Turbidity</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">0</div>
+        <div class="stat-label">Natural Freshwater Lakes</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">Seasonal</div>
+        <div class="stat-label">Rainfall Pattern</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="fade-in">
+    <h2>Key Challenges</h2>
+    <div class="challenge-cards">
+      <div class="challenge-card">
+        <h3>Water Shortages</h3>
+        <p>During the long dry season, stored water often runs out, forcing reliance on external water transportation.</p>
+      </div>
+      <div class="challenge-card">
+        <h3>Water Quality</h3>
+        <p>High turbidity in groundwater makes it unsuitable for drinking without proper treatment.</p>
+      </div>
+      <div class="challenge-card">
+        <h3>Climate Threats</h3>
+        <p>Rising sea levels, flooding, and saltwater intrusion further threaten existing freshwater resources.</p>
+      </div>
+      <div class="challenge-card">
+        <h3>Infrastructure Needs</h3>
+        <p>Saibai Island is one of the Australian communities under the greatest freshwater stress, highlighting the urgent need for improved infrastructure.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="fade-in">
+    <h2>Project Goals</h2>
+    <p>In our design brief 2.1 "Alternative water harvesting and treatment", we are going to address the issue of whole-year water supply as well as make sure of the water safety of the island.</p>
+    
+    <div class="project-goals">
+      <div class="goal-item">
+        <div class="goal-icon">💧</div>
+        <h3>Year-Round Supply</h3>
+        <p>Ensure consistent water availability throughout both wet and dry seasons</p>
+      </div>
+      <div class="goal-item">
+        <div class="goal-icon">🔬</div>
+        <h3>Water Safety</h3>
+        <p>Implement treatment systems to reduce turbidity to below 1NTU</p>
+      </div>
+      <div class="goal-item">
+        <div class="goal-icon">⚡</div>
+        <h3>Reliability</h3>
+        <p>Design systems that can withstand extreme weather conditions</p>
+      </div>
+      <div class="goal-item">
+        <div class="goal-icon">🔄</div>
+        <h3>Sustainability</h3>
+        <p>Create solutions that are easy to maintain and operate independently</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="fade-in">
+    <h2>Why Water Harvesting & Treatment Matters</h2>
+    <p>On Saibai Island, rainwater harvesting and water treatment are extremely important because rainfall is highly seasonal, and long dry periods often lead to water shortages. Therefore, efficient water collection systems can provide residents with sufficient water throughout the year to meet their daily needs.</p>
+    
+    <div class="callout">
+      <p>At the same time, water treatment is essential to ensure that the stored water is safe for drinking and household use. Without proper treatment, collected water may contain harmful bacteria or impurities. Improving both water harvesting and treatment systems is crucial for Saibai Island's long-term water security, public health, and its ability to cope with climate change and rising sea levels.</p>
+    </div>
+  </section>
+
+  <section class="fade-in">
+    <h2>Design Requirements</h2>
+    
+    <div class="challenge-cards">
+      <div class="challenge-card">
+        <h3>Extreme Weather Resilience</h3>
+        <p>First and most importantly, Saibai Island is frequently affected by extreme weather conditions. Therefore, this system must be designed to be highly reliable, easy to maintain, and capable of operating independently. The purpose of such a design is to ensure that even during extreme weather events, the system can continue to function properly to meet the residents' water needs.</p>
+      </div>
+      <div class="challenge-card">
+        <h3>Water Quality Standards</h3>
+        <p>According to the brief on EWB, the Water Filtration System must need to be designed to meet the standard that reducing the turbidity in water to below 1NTU which is classified as high water quality.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="fade-in">
+    <h2>Explore Our Solutions</h2>
+    <div class="grid">
+      <div class="card" onclick="location.href='research.html'">
+        <h3>Research</h3>
+        <p>Background & Problem Description</p>
+      </div>
+      <div class="card" onclick="location.href='design-options.html'">
+        <h3>Design</h3>
+        <p>Design Solution Options, Selection, Detailed Design & Prototype</p>
+      </div>
+      <div class="card" onclick="location.href='implementation.html'">
+        <h3>Execution</h3>
+        <p>Implementation Plan & Cost Analysis</p>
+      </div>
+      <div class="card" onclick="location.href='recommend.html'">
+        <h3>Insights</h3>
+        <p>Other Considerations & Recommendations</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>© 2025 Team A — Saibai Island Alternative Water Harvesting Project</footer>
+
+<script>
+  // Fade-in animation on scroll
+  document.addEventListener('DOMContentLoaded', function() {
+    const fadeElements = document.querySelectorAll('.fade-in');
+    
+    const fadeInObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    fadeElements.forEach(el => {
+      fadeInObserver.observe(el);
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Design Solution Option | Saibai Island Water & Sanitation Project</title>
+<style>
+  :root {
+    --brand:#004d40;
+    --brand2:#00796b;
+    --bg:#f3fbfa;
+    --ink:#0f2723;
+  }
+  html {scroll-behavior:smooth}
+  body {
+    margin:0;
+    font-family:'Segoe UI',system-ui,-apple-system,Arial,sans-serif;
+    color:var(--ink);
+    background:var(--bg);
+    font-size:1.1rem;
+    line-height:1.75;
+  }
+
+  /* ===== NAVIGATION ===== */
+  header {
+    background:var(--brand);
+    color:#fff;
+    position:sticky;
+    top:0;
+    z-index:1000;
+  }
+  nav ul {
+    list-style:none;
+    margin:0;
+    padding:0;
+    display:flex;
+    align-items:center;
+  }
+  nav li {position:relative}
+  nav a {
+    display:block;
+    padding:18px 24px;
+    color:#fff;
+    text-decoration:none;
+    font-weight:700;
+    letter-spacing:0.2px;
+    font-size:1.05rem;
+  }
+  nav li:hover>a {
+    background:var(--brand2);
+  }
+  .dropdown-content {
+    display:none;
+    position:absolute;
+    background:var(--brand);
+    min-width:240px;
+    box-shadow:0 8px 20px rgba(0,0,0,.2);
+  }
+  .dropdown-content a {
+    display:block;
+    padding:14px 18px;
+    font-weight:500;
+  }
+  nav li:hover>.dropdown-content {display:block}
+  .sub-dropdown{position:relative}
+  .sub-dropdown-content{
+    display:none;
+    position:absolute;
+    left:240px;top:0;
+    background:#00695c;
+    min-width:240px;
+    box-shadow:0 8px 20px rgba(0,0,0,.2);
+  }
+  .sub-dropdown:hover .sub-dropdown-content{display:block}
+
+  /* ===== HERO SECTION ===== */
+  .hero {
+    background:
+      linear-gradient(135deg,rgba(0,77,64,.9),rgba(0,121,107,.7)),
+      url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1920&auto=format&fit=crop') center/cover no-repeat;
+    color:#fff;
+    text-align:center;
+    padding:120px 30px 100px;
+  }
+  .hero h1 {
+    font-size:3rem;
+    letter-spacing:0.5px;
+    margin-bottom:10px;
+    text-shadow:0 3px 8px rgba(0,0,0,.3);
+  }
+  .breadcrumb {
+    opacity:.95;
+    font-size:1rem;
+    margin-bottom:24px;
+  }
+  .breadcrumb a {
+    color:#b2dfdb;
+    text-decoration:none;
+  }
+  .breadcrumb .sep {margin:0 .4rem;opacity:.7}
+  .kpis {
+    display:flex;
+    gap:16px;
+    justify-content:center;
+    flex-wrap:wrap;
+  }
+  .badge {
+    background:rgba(255,255,255,.18);
+    border:1px solid rgba(255,255,255,.3);
+    backdrop-filter:blur(4px);
+    padding:10px 16px;
+    border-radius:999px;
+    font-weight:700;
+    font-size:1rem;
+    transition:.3s;
+  }
+  .badge:hover {
+    background:rgba(255,255,255,.3);
+    transform:scale(1.05);
+  }
+
+  /* ===== CONTENT ===== */
+  main {
+    width:100%;
+    max-width:1400px;
+    margin:0 auto;
+    padding:60px 40px 120px;
+  }
+  .callout {
+    background:#eafffa;
+    border-left:6px solid var(--brand2);
+    border-radius:12px;
+    padding:30px 28px;
+    font-size:1.15rem;
+    box-shadow:0 10px 26px rgba(0,0,0,.06);
+    margin-bottom:50px;
+    transition:all .5s ease;
+  }
+  .callout:hover {
+    transform:translateY(-4px);
+    box-shadow:0 16px 36px rgba(0,0,0,.1);
+  }
+
+  /* ===== CARDS ===== */
+  .grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(360px,1fr));
+    gap:28px;
+  }
+  .card {
+    background:#fff;
+    border-radius:20px;
+    border:1px solid #dcefe9;
+    box-shadow:0 16px 36px rgba(0,0,0,.08);
+    padding:30px 26px;
+    transition:all .4s ease;
+    transform:translateY(0) scale(1);
+    opacity:0;
+  }
+  .card.show {
+    opacity:1;
+    transform:translateY(0) scale(1);
+  }
+  .card:hover {
+    transform:translateY(-10px) scale(1.02);
+    box-shadow:0 24px 46px rgba(0,0,0,.12);
+  }
+  .card h3 {
+    font-size:1.4rem;
+    color:var(--brand);
+    margin:0 0 12px;
+  }
+  .meta {
+    font-size:1.05rem;
+    color:#375;
+    margin-bottom:16px;
+  }
+  .pill {
+    display:inline-block;
+    background:#e0f7f5;
+    color:#034d45;
+    border:1px solid #bfece7;
+    border-radius:999px;
+    padding:7px 12px;
+    font-size:.9rem;
+    font-weight:700;
+    margin-right:8px;
+  }
+  .card-footer {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:20px;
+  }
+  .btn {
+    border:none;
+    border-radius:12px;
+    padding:12px 18px;
+    font-size:1rem;
+    font-weight:800;
+    cursor:pointer;
+    transition:.25s;
+  }
+  .btn--primary {
+    background:var(--brand2);
+    color:#fff;
+  }
+  .btn--ghost {
+    background:#f3faf9;
+    border:1px solid #bfece7;
+    color:#0e6e63;
+  }
+  .btn:hover {
+    transform:translateY(-2px);
+    box-shadow:0 4px 10px rgba(0,0,0,.12);
+  }
+
+  footer {
+    background:var(--brand);
+    color:#fff;
+    text-align:center;
+    padding:20px;
+    font-size:1rem;
+    letter-spacing:0.2px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li>
+        <a href="research.html">Research</a>
+        <div class="dropdown-content">
+          <a href="research.html#background">Background</a>
+          <a href="research.html#problem">Problem Description</a>
+        </div>
+      </li>
+      <li>
+        <a href="#">Design</a>
+        <div class="dropdown-content">
+          <div class="sub-dropdown">
+            <a href="design-options.html">Design Solution Option ▸</a>
+            <div class="sub-dropdown-content">
+              <a href="solution1.html">Solution 1</a>
+              <a href="solution2.html">Solution 2</a>
+              <a href="solution3.html">Solution 3</a>
+            </div>
+          </div>
+          <div class="sub-dropdown">
+            <a href="design-selection.html">Design Selection ▸</a>
+            <div class="sub-dropdown-content">
+              <a href="selectionA.html">Solution A</a>
+              <a href="selectionB.html">Solution B</a>
+              <a href="selectionC.html">Solution C</a>
+            </div>
+          </div>
+          <a href="detaileddesign.html">Detailed Design</a>
+          <a href="prototype.html">Prototype</a>
+        </div>
+      </li>
+      <li>
+        <a href="#">Execution</a>
+        <div class="dropdown-content">
+          <a href="implementation.html">Implementation Plan</a>
+          <a href="cost.html">Cost Analysis</a>
+        </div>
+      </li>
+      <li>
+        <a href="#">Insights</a>
+        <div class="dropdown-content">
+          <a href="other.html">Other Considerations</a>
+          <a href="recommend.html">Recommendations</a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<section class="hero">
+  <h1>Design Solution Option</h1>
+  <div class="breadcrumb">
+    <a href="index.html">Home</a> <span class="sep">›</span> Design <span class="sep">›</span> Design Solution Option
+  </div>
+  <div class="kpis">
+    <span class="badge">Target turbidity &lt; 1 NTU</span>
+    <span class="badge">Low-maintenance</span>
+    <span class="badge">Community operable</span>
+    <span class="badge">Gravity / Solar ready</span>
+  </div>
+</section>
+
+<main>
+  <section class="callout">
+    <p>
+      The water supply of Saibai Island is mainly dependent on lagoons and rainwater harvesting. In addition, the treatment water method of Saibai Island is mainly 5 μm and 1 μm filtration combined with chlorine disinfection. However, the turbidity of the treated water is often between 1–2 NTU, which does not meet TSIRC’s newly released requirement for water turbidity less than 1 NTU. Meanwhile, some residents disinfect by boiling, increasing both energy use and cost.<br><br>
+      In summary, the main problem for communities is how to continue supplying safe drinking water in an affordable, maintainable, low-energy solution under climate and water-quality uncertainty, while reusing existing storage and distribution facilities as much as possible.
+    </p>
+  </section>
+
+  <div class="grid">
+    <div class="card">
+      <h3>Solution 1 — Roof Rainwater (Non-potable)</h3>
+      <p class="meta">Roof → gutter + leaf guard → storage tank → household use (toilets, garden).</p>
+      <span class="pill">Lowest energy</span><span class="pill">Easy install</span>
+      <div class="card-footer">
+        <button class="btn btn--ghost" onclick="location.href='design-selection.html'">Compare</button>
+        <button class="btn btn--primary" onclick="location.href='solution1.html'">View Solution 1 →</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Solution 2 — Lagoon Filtration (Potable)</h3>
+      <p class="meta">Mesh screen + swirl settler → 5 μm/1 μm + carbon → UF → disinfection.</p>
+      <span class="pill">Turbidity control</span><span class="pill">Scalable</span>
+      <div class="card-footer">
+        <button class="btn btn--ghost" onclick="location.href='design-selection.html'">Compare</button>
+        <button class="btn btn--primary" onclick="location.href='solution2.html'">View Solution 2 →</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Solution 3 — UF + UV Module</h3>
+      <p class="meta">Compact modular unit providing pathogen barrier with simple visual checks.</p>
+      <span class="pill">High safety</span><span class="pill">Modular swap</span>
+      <div class="card-footer">
+        <button class="btn btn--ghost" onclick="location.href='design-selection.html'">Compare</button>
+        <button class="btn btn--primary" onclick="location.href='solution3.html'">View Solution 3 →</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>© 2025 Team A — Saibai Island Alternative Water Harvesting Project</footer>
+
+<script>
+  // 动态滚动淡入效果
+  const io = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){e.target.classList.add('show');}
+    });
+  },{threshold:.2});
+  document.querySelectorAll('.card').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Research | Saibai Island Water & Sanitation Project</title>
+
+  <style>
+    :root{--brand:#004d40;--brand-2:#00796b;--bg:#f7faf9;--ink:#1f2937}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+    header{background:var(--brand);color:#fff;position:sticky;top:0;z-index:999}
+    nav ul{margin:0;padding:0;display:flex;align-items:center;list-style:none}
+    nav li{position:relative}
+    nav a{display:block;padding:14px 18px;color:#fff;text-decoration:none;font-weight:600}
+    nav li:hover>a{background:var(--brand-2)}
+    .dropdown-content{display:none;position:absolute;background:var(--brand);min-width:220px;box-shadow:0 6px 18px rgba(0,0,0,.18)}
+    .dropdown-content a{padding:12px 14px;display:block;font-weight:500}
+    nav li:hover>.dropdown-content{display:block}
+    .sub-dropdown{position:relative}
+    .sub-dropdown-content{display:none;position:absolute;left:220px;top:0;background:#00695c;min-width:220px;box-shadow:0 6px 18px rgba(0,0,0,.18)}
+    .sub-dropdown:hover .sub-dropdown-content{display:block}
+    .hero{background:linear-gradient(135deg,rgba(0,77,64,.88),rgba(0,121,107,.72)),url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;color:#fff;padding:70px 24px;text-align:center}
+    .hero h1{margin:0 0 10px;font-size:32px}
+    .breadcrumb{font-size:14px;opacity:.9}
+    .breadcrumb a{color:#b2dfdb;text-decoration:none}.breadcrumb .sep{margin:0 .4rem;opacity:.7}
+    main{max-width:1100px;margin:40px auto;padding:0 18px 60px}
+    section{background:#fff;border-radius:14px;padding:30px;margin-bottom:26px;box-shadow:0 10px 22px rgba(0,0,0,.08)}
+    .callout{border-left:4px solid var(--brand-2);background:#ecfffd;padding:14px 16px;border-radius:8px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+    .card{background:#fff;border-radius:14px;box-shadow:0 10px 22px rgba(0,0,0,.08);padding:22px;border:1px solid #e7f3f2;transition:.25s;cursor:pointer}
+    .card:hover{transform:translateY(-6px);box-shadow:0 14px 28px rgba(0,0,0,.16)}
+    .card h3{margin:0 0 8px;color:var(--brand)}
+    footer{background:var(--brand);color:#fff;text-align:center;padding:18px;font-size:14px}
+  </style>
+
+</head>
+<body>
+
+<header>
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+
+      <li>
+        <a href="research.html">Research</a>
+        <div class="dropdown-content">
+          <a href="background.html">Background</a>
+          <a href="problem-description.html">Problem Description</a>
+        </div>
+      </li>
+
+      <li>
+        <a href="#">Design</a>
+        <div class="dropdown-content">
+          <div class="sub-dropdown">
+            <a href="design-options.html">Design Solution Option ▸</a>
+            <div class="sub-dropdown-content">
+              <a href="solution1.html">Solution 1</a>
+              <a href="solution2.html">Solution 2</a>
+              <a href="solution3.html">Solution 3</a>
+            </div>
+          </div>
+          <div class="sub-dropdown">
+            <a href="design-selection.html">Design Selection ▸</a>
+            <div class="sub-dropdown-content">
+              <a href="selectionA.html">Solution A</a>
+              <a href="selectionB.html">Solution B</a>
+              <a href="selectionC.html">Solution C</a>
+            </div>
+          </div>
+          <a href="detaileddesign.html">Detailed Design</a>
+          <a href="prototype.html">Prototype</a>
+        </div>
+      </li>
+
+      <li>
+        <a href="#">Execution</a>
+        <div class="dropdown-content">
+          <a href="implementation.html">Implementation Plan</a>
+          <a href="cost.html">Cost Analysis</a>
+        </div>
+      </li>
+
+      <li>
+        <a href="#">Insights</a>
+        <div class="dropdown-content">
+          <a href="other.html">Other Considerations</a>
+          <a href="recommend.html">Recommendations</a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<div class="hero">
+  <h1>Research</h1>
+  <div class="breadcrumb">
+    <a href="index.html">Home</a> <span class="sep">›</span> Research
+  </div>
+</div>
+<main>
+
+<section class="callout">Use this page to present <strong>Background</strong> and <strong>Problem Description</strong>. The dropdown under Research jumps to these anchors.</section>
+<section id="background.html"><h2>Background</h2><p>Summarise context, stakeholders, and current practices. Link evidence.</p></section>
+<section id="problem"><h2>Problem Description</h2><p>State the user needs sentence and the concise problem scope; introduce criteria preview.</p></section>
+<script>
+  // simple breadcrumb add-on for anchor
+  const bc = document.querySelector('.breadcrumb');
+  function setBC(){
+    const h = location.hash;
+    if(h==='#background') bc.innerHTML = '<a href="index.html">Home</a> <span class="sep">›</span> Research <span class="sep">›</span> Background';
+    else if(h==='#problem') bc.innerHTML = '<a href="index.html">Home</a> <span class="sep">›</span> Research <span class="sep">›</span> Problem Description';
+    else bc.innerHTML = '<a href="index.html">Home</a> <span class="sep">›</span> Research';
+  }
+  window.addEventListener('hashchange', setBC);
+  window.addEventListener('load', setBC);
+</script>
+
+</main>
+<footer>© 2025 Team A — Saibai Island Alternative Water Harvesting Project</footer>
+</body>
+</html>

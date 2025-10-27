@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Design Solution Option – Solution 3 | Saibai Island Water & Sanitation Project</title>
+
+<style>
+  :root{--brand:#004d40;--brand-2:#00796b;--bg:#f7faf9;--ink:#102a27}
+  html{scroll-behavior:smooth}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+
+  /* NAV */
+  header{background:var(--brand);color:#fff;position:sticky;top:0;z-index:999}
+  nav ul{margin:0;padding:0;display:flex;align-items:center;list-style:none}
+  nav li{position:relative}
+  nav a{display:block;padding:14px 18px;color:#fff;text-decoration:none;font-weight:700}
+  nav li:hover>a{background:var(--brand-2)}
+  .dropdown-content{display:none;position:absolute;background:var(--brand);min-width:220px;box-shadow:0 6px 18px rgba(0,0,0,.18)}
+  .dropdown-content a{padding:12px 14px;display:block}
+  nav li:hover>.dropdown-content{display:block}
+  .sub-dropdown{position:relative}
+  .sub-dropdown-content{display:none;position:absolute;left:220px;top:0;background:#00695c;min-width:220px;box-shadow:0 6px 18px rgba(0,0,0,.18)}
+  .sub-dropdown:hover .sub-dropdown-content{display:block}
+
+  /* HERO */
+  .hero{
+    background:
+      linear-gradient(135deg,rgba(0,77,64,.88),rgba(0,121,107,.72)),
+      url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;
+    color:#fff;padding:76px 22px;text-align:center
+  }
+  .hero h1{margin:0 0 10px;font-size:34px}
+  .breadcrumb{font-size:14px;opacity:.95}
+  .breadcrumb a{color:#b2dfdb;text-decoration:none}.breadcrumb .sep{margin:0 .4rem;opacity:.7}
+
+  /* MAIN */
+  main{max-width:1100px;margin:40px auto;padding:0 18px 70px}
+  section{background:#fff;border-radius:16px;padding:26px;margin-bottom:26px;box-shadow:0 12px 26px rgba(0,0,0,.08);border:1px solid #e6f2f0}
+  h2{margin:0 0 12px;color:var(--brand)}
+  p{margin:0 0 10px}
+  .callout{border-left:4px solid var(--brand-2);background:#ecfffd;padding:14px 16px;border-radius:10px}
+
+  /* Pills */
+  .pill{display:inline-block;background:#e0f7f5;color:#035f55;border:1px solid #bfece7;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:800;margin-right:8px}
+
+  /* ===== Process Stepper (robust spacing via margin) ===== */
+  .process-timeline{position:relative;margin-top:12px;padding-left:24px}
+  .process-timeline::before{
+    content:"";position:absolute;left:42px;top:0;bottom:0;width:3px;background:linear-gradient(#bfece7,#8ddfd6);
+    border-radius:3px;opacity:.5
+  }
+  .tstep{position:relative;margin:12px 0 18px 0;list-style:none;background:#fff;border:1px solid #dff0ec;border-radius:14px;padding:16px 20px;
+    box-shadow:0 10px 22px rgba(0,0,0,.06);transition:.25s ease;overflow:hidden}
+  .tstep:hover{transform:translateY(-2px)}
+  .tstep .dot{
+    position:absolute;left:24px;top:22px;width:28px;height:28px;border-radius:999px;background:#0aa69a;color:#fff;font-weight:900;
+    display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 3px #e9fbf8;z-index:2
+  }
+  .tstep .head{display:flex;align-items:center;cursor:pointer;min-height:28px}
+  .tstep .head-content{display:flex;flex-direction:column;margin-left:64px;flex:1}
+  .tstep .title{font-weight:800;color:#0a6b60;margin-right:10px}
+  .tstep .summary{color:#245e59;font-size:0.95rem}
+  .tstep .chev{margin-left:auto;transition:.25s;color:#0aa69a}
+  .tstep.open .chev{transform:rotate(90deg)}
+  .tstep .body{max-height:0;overflow:hidden;transition:max-height .35s ease;margin-top:12px}
+  .tstep.open .body{max-height:280px}
+  .tstep .badges{margin-top:8px;display:flex;flex-wrap:wrap;gap:8px}
+  .tstep .pill{margin-right:0}
+
+  .proc-controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+  .proc-btn{cursor:pointer;border:none;border-radius:10px;padding:9px 12px;font-weight:900;background:#f4fbfa;border:1px solid #cdeee8;color:#0e6e63}
+  .proc-btn:active{transform:translateY(1px)}
+
+  @media (max-width:700px){
+    .tstep .head-content{margin-left:72px}
+    .process-timeline::before{left:46px}
+    .tstep .dot{left:26px}
+  }
+
+  /* Gallery */
+  .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+  figure{margin:0;position:relative;border:1px solid #dff0ec;border-radius:14px;overflow:hidden;background:#f3fbfa}
+  .ph{aspect-ratio:16/10;display:flex;align-items:center;justify-content:center;font-weight:800;color:#0b6f65;opacity:.8}
+  figcaption{padding:10px 12px;background:#ffffff;border-top:1px solid #e7f3f2;font-size:13px}
+
+  /* Wikipedia-style references */
+  sup.ref a{text-decoration:none;color:#0d9488;font-weight:700}
+  sup.ref a:hover{text-decoration:underline}
+  .refs{font-size:0.95rem;line-height:1.6}
+  .refs li{margin:6px 0}
+  .refs a{color:#0f766e;text-decoration:underline}
+  .backlink{font-size:0.9rem;margin-left:6px;color:#0d9488;text-decoration:none}
+  .backlink:hover{text-decoration:underline}
+
+  /* Reveal */
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease, transform .6s ease}
+  .reveal.show{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li>
+        <a href="research.html">Research</a>
+        <div class="dropdown-content">
+          <a href="research.html#background">Background</a>
+          <a href="research.html#problem">Problem Description</a>
+        </div>
+      </li>
+      <li>
+        <a href="#">Design</a>
+        <div class="dropdown-content">
+          <div class="sub-dropdown">
+            <a href="design-options.html">Design Solution Option ▸</a>
+            <div class="sub-dropdown-content">
+              <a href="solution1.html">Solution 1</a>
+              <a href="solution2.html">Solution 2</a>
+              <a href="solution3.html">Solution 3</a>
+            </div>
+          </div>
+          <div class="sub-dropdown">
+            <a href="design-selection.html">Design Selection ▸</a>
+            <div class="sub-dropdown-content">
+              <a href="selectionA.html">Solution A</a>
+              <a href="selectionB.html">Solution B</a>
+              <a href="selectionC.html">Solution C</a>
+            </div>
+          </div>
+          <a href="detaileddesign.html">Detailed Design</a>
+          <a href="prototype.html">Prototype</a>
+        </div>
+      </li>
+      <li>
+        <a href="#">Execution</a>
+        <div class="dropdown-content">
+          <a href="implementation.html">Implementation Plan</a>
+          <a href="cost.html">Cost Analysis</a>
+        </div>
+      </li>
+      <li>
+        <a href="#">Insights</a>
+        <div class="dropdown-content">
+          <a href="other.html">Other Considerations</a>
+          <a href="recommend.html">Recommendations</a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<div class="hero">
+  <h1>Design Solution Option — Solution 3</h1>
+  <div class="breadcrumb">
+    <a href="index.html">Home</a> <span class="sep">›</span> Design <span class="sep">›</span> Solution 3
+  </div>
+</div>
+
+<main>
+
+  <!-- Overview -->
+  <section class="reveal">
+    <h2>Overview</h2>
+    <div class="callout">
+      <p>
+        This solution <b>divides the water resource into drinkable and undrinkable streams</b>.  
+        <b>Undrinkable water</b> comes from rooftops and is used for flushing and watering plants.  
+        <b>Drinkable water</b> comes from the lagoon and passes through a <b>swirl settling tank</b><sup class="ref" id="ref-1-back"><a href="#ref-1">[1]</a></sup>, 
+        then through <b>multi-stage filtration</b> and <b>UV disinfection</b>. Finally, clean water is stored in the <b>existing main storage tank</b> and distributed to households via the <b>underground tube system</b>.
+      </p>
+      <p style="margin-top:8px">
+        This approach <b>maximizes the use of water resources</b>. The swirl settling tank primarily relies on <b>gravity</b> to remove mud and debris, reducing energy demand and simplifying maintenance.
+      </p>
+    </div>
+    <div style="margin-top:10px">
+      <span class="pill">Dual-stream (potable / non-potable)</span>
+      <span class="pill">Gravity-based swirl settling</span>
+      <span class="pill">Re-use existing storage & network</span>
+      <span class="pill">Maximise resource use</span>
+    </div>
+  </section>
+
+  <!-- Process Stepper -->
+  <section class="reveal">
+    <h2>Process (Split Resource → Potable Pathway)</h2>
+    <div class="proc-controls">
+      <button class="proc-btn" id="procExpand">Expand all</button>
+      <button class="proc-btn" id="procCollapse">Collapse all</button>
+    </div>
+
+    <ol class="process-timeline">
+      <li class="tstep reveal">
+        <span class="dot">1</span>
+        <div class="head" data-toggle="step">
+          <div class="head-content">
+            <div class="title">Non-potable stream</div>
+            <div class="summary">Rooftop rainwater → flushing / garden</div>
+          </div>
+          <span class="chev">▶</span>
+        </div>
+        <div class="body">
+          <p>Rainwater captured from roofs is routed for non-potable uses such as toilet flushing and irrigation, reducing demand on potable supply.</p>
+          <div class="badges">
+            <span class="pill">Reduce potable demand</span>
+            <span class="pill">Simple use cases</span>
+          </div>
+        </div>
+      </li>
+
+      <li class="tstep reveal">
+        <span class="dot">2</span>
+        <div class="head" data-toggle="step">
+          <div class="head-content">
+            <div class="title">Lagoon intake</div>
+            <div class="summary">Raw water for potable treatment</div>
+          </div>
+          <span class="chev">▶</span>
+        </div>
+        <div class="body">
+          <p>Water is abstracted from the lagoon during suitable windows and conveyed to the swirl settling tank for grit/mud removal.</p>
+        </div>
+      </li>
+
+      <li class="tstep reveal">
+        <span class="dot">3</span>
+        <div class="head" data-toggle="step">
+          <div class="head-content">
+            <div class="title">Swirl settling tank</div>
+            <div class="summary">Gravity-driven removal of mud & debris <sup class="ref"><a href="#ref-1">[1]</a></sup></div>
+          </div>
+          <span class="chev">▶</span>
+        </div>
+        <div class="body">
+          <p>Induces a controlled swirl to keep solids away from the outlet and settle rapidly to the bottom, decreasing load on downstream filters.</p>
+          <div class="badges">
+            <span class="pill">Low energy</span>
+            <span class="pill">Lower filter load</span>
+          </div>
+        </div>
+      </li>
+
+      <li class="tstep reveal">
+        <span class="dot">4</span>
+        <div class="head" data-toggle="step">
+          <div class="head-content">
+            <div class="title">Multi-stage filtration</div>
+            <div class="summary">5 μm → 1 μm → activated carbon</div>
+          </div>
+          <span class="chev">▶</span>
+        </div>
+        <div class="body">
+          <p>Cartridge filtration removes fine particles and activated carbon polishes taste/odor before disinfection.</p>
+          <div class="badges">
+            <span class="pill">Turbidity control</span>
+            <span class="pill">Taste & odor</span>
+          </div>
+        </div>
+      </li>
+
+      <li class="tstep reveal">
+        <span class="dot">5</span>
+        <div class="head" data-toggle="step">
+          <div class="head-content">
+            <div class="title">UV disinfection</div>
+            <div class="summary">Final barrier before storage</div>
+          </div>
+          <span class="chev">▶</span>
+        </div>
+        <div class="body">
+          <p>UV provides pathogen inactivation without chemicals and prepares water for storage and distribution.</p>
+          <div class="badges">
+            <span class="pill">No chemical residual</span>
+            <span class="pill">Microbial barrier</span>
+          </div>
+        </div>
+      </li>
+
+      <li class="tstep reveal">
+        <span class="dot">6</span>
+        <div class="head" data-toggle="step">
+          <div class="head-content">
+            <div class="title">Existing main storage tank</div>
+            <div class="summary">Buffer capacity, level control</div>
+          </div>
+          <span class="chev">▶</span>
+        </div>
+        <div class="body">
+          <p>Treated water is stored in the current main tank, leveraging existing assets and providing buffer during demand peaks.</p>
+          <div class="badges">
+            <span class="pill">Reuse assets</span>
+            <span class="pill">Operational buffer</span>
+          </div>
+        </div>
+      </li>
+
+      <li class="tstep reveal">
+        <span class="dot">7</span>
+        <div class="head" data-toggle="step">
+          <div class="head-content">
+            <div class="title">Distribution to households</div>
+            <div class="summary">Underground tube system</div>
+          </div>
+          <span class="chev">▶</span>
+        </div>
+        <div class="body">
+          <p>Water flows through the underground pipe network to each home for end use.</p>
+          <div class="badges">
+            <span class="pill">Existing network</span>
+            <span class="pill">Scalable</span>
+          </div>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- Images / Sketches -->
+  <section class="reveal">
+    <h2>Images / Sketches</h2>
+    <div class="gallery">
+      <figure>
+        <div class="ph">IMAGE 1 — Split streams (potable / non-potable)</div>
+        <figcaption>Schematic showing rooftop non-potable and lagoon potable pathways.</figcaption>
+      </figure>
+      <figure>
+        <div class="ph">IMAGE 2 — Swirl settling tank</div>
+        <figcaption>Gravity-driven swirl flow to remove mud and debris.</figcaption>
+      </figure>
+      <figure>
+        <div class="ph">IMAGE 3 — Filtration + UV</div>
+        <figcaption>5 μm → 1 μm → activated carbon and UV disinfection.</figcaption>
+      </figure>
+      <figure>
+        <div class="ph">IMAGE 4 — Main storage & distribution</div>
+        <figcaption>Existing main storage tank and underground distribution network.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- References -->
+  <section class="reveal">
+    <h2>References</h2>
+    <ol class="refs">
+      <li id="ref-1">
+        CSIRO (n.d.). <i>SWIRLFLOW: Increase production and reduce tank maintenance costs.</i> CSIRO. 
+        <a href="https://www.csiro.au/en/work-with-us/ip-commercialisation/Marketplace/Swirl-Flow" target="_blank" rel="noopener">
+          https://www.csiro.au/en/work-with-us/ip-commercialisation/Marketplace/Swirl-Flow
+        </a>
+        <a href="#ref-1-back" class="backlink">↑ Back to text</a>
+      </li>
+    </ol>
+  </section>
+
+</main>
+
+<footer>© 2025 Team A — Saibai Island Alternative Water Harvesting Project</footer>
+
+<script>
+  // Reveal 动效
+  const io = new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('show')),{threshold:.2});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // Stepper 展开/收起逻辑
+  (function(){
+    document.querySelectorAll('[data-toggle="step"]').forEach(head=>{
+      head.addEventListener('click', ()=> head.parentElement.classList.toggle('open'));
+    });
+    const openAll=document.getElementById('procExpand'),
+          closeAll=document.getElementById('procCollapse');
+    if(openAll) openAll.onclick=()=>document.querySelectorAll('.tstep').forEach(s=>s.classList.add('open'));
+    if(closeAll) closeAll.onclick=()=>document.querySelectorAll('.tstep').forEach(s=>s.classList.remove('open'));
+
+    const ioSteps=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('show')),{threshold:.2});
+    document.querySelectorAll('.tstep.reveal').forEach(s=>ioSteps.observe(s));
+  })();
+</script>
+</body>
+</html>

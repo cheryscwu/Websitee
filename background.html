@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Background | Saibai Island Water & Sanitation Project</title>
+
+<style>
+  :root {
+    --brand: #004d40;
+    --brand-2: #00796b;
+    --bg: #f7faf9;
+    --ink: #1f2937;
+    --accent: #e0f2f1;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* Header */
+  header {
+    background: var(--brand);
+    color: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  }
+  nav ul {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    list-style: none;
+  }
+  nav li { position: relative; }
+  nav a {
+    display: block;
+    padding: 14px 18px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background .3s ease;
+  }
+  nav li:hover > a { background: var(--brand-2); }
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background: var(--brand);
+    min-width: 220px;
+    box-shadow: 0 6px 18px rgba(0,0,0,.18);
+  }
+  .dropdown-content a { padding: 12px 14px; display: block; font-weight: 500; }
+  nav li:hover > .dropdown-content { display: block; }
+  .sub-dropdown { position: relative; }
+  .sub-dropdown-content {
+    display: none;
+    position: absolute;
+    left: 220px;
+    top: 0;
+    background: #00695c;
+    min-width: 220px;
+    box-shadow: 0 6px 18px rgba(0,0,0,.18);
+  }
+  .sub-dropdown:hover .sub-dropdown-content { display: block; }
+
+  /* Hero section */
+  .hero {
+    background: linear-gradient(135deg,rgba(0,77,64,.88),rgba(0,121,107,.72)), 
+      url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1600&auto=format&fit=crop') 
+      center/cover no-repeat;
+    color: #fff;
+    text-align: center;
+    padding: 90px 24px;
+    overflow: hidden;
+    position: relative;
+  }
+  .hero h1 {
+    margin: 0 0 10px;
+    font-size: 40px;
+    animation: fadeInDown 1.5s ease forwards;
+  }
+  .breadcrumb {
+    font-size: 14px;
+    opacity: .9;
+    animation: fadeInUp 1.8s ease forwards;
+  }
+  .breadcrumb a { color: #b2dfdb; text-decoration: none; }
+  .breadcrumb .sep { margin: 0 .4rem; opacity: .7; }
+
+  /* Section layout */
+  main {
+    max-width: 1150px;
+    margin: 60px auto;
+    padding: 0 24px 80px;
+  }
+  section {
+    background: #fff;
+    border-radius: 14px;
+    padding: 40px 36px;
+    margin-bottom: 40px;
+    box-shadow: 0 10px 26px rgba(0,0,0,.08);
+    transform: translateY(40px);
+    opacity: 0;
+    transition: all 1s ease;
+  }
+  section.visible {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  h2 {
+    margin-top: 0;
+    color: var(--brand);
+    position: relative;
+  }
+  h2::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 50px;
+    height: 3px;
+    background: var(--brand-2);
+    border-radius: 2px;
+  }
+  p { margin-bottom: 1rem; text-align: justify; }
+
+  /* Grid & card */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+  }
+  .card {
+    background: var(--accent);
+    border-radius: 12px;
+    padding: 20px 24px;
+    transition: transform .3s ease, box-shadow .3s ease;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  }
+  .card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 24px rgba(0,0,0,0.12);
+  }
+  .card h3 { margin-top: 0; color: var(--brand); }
+
+  .callout {
+    border-left: 5px solid var(--brand-2);
+    background: #e0f7f4;
+    padding: 18px 20px;
+    border-radius: 10px;
+    font-weight: 500;
+  }
+
+  footer {
+    background: var(--brand);
+    color: #fff;
+    text-align: center;
+    padding: 18px;
+    font-size: 14px;
+  }
+
+  /* Animations */
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li>
+        <a href="research.html">Research</a>
+        <div class="dropdown-content">
+          <a href="background.html">Background</a>
+          <a href="problem-description.html">Problem Description</a>
+        </div>
+      </li>
+      <li>
+        <a href="#">Design</a>
+        <div class="dropdown-content">
+          <div class="sub-dropdown">
+            <a href="design-options.html">Design Solution Option ▸</a>
+            <div class="sub-dropdown-content">
+              <a href="solution1.html">Solution 1</a>
+              <a href="solution2.html">Solution 2</a>
+              <a href="solution3.html">Solution 3</a>
+            </div>
+          </div>
+          <div class="sub-dropdown">
+            <a href="design-selection.html">Design Selection ▸</a>
+            <div class="sub-dropdown-content">
+              <a href="selectionA.html">Solution A</a>
+              <a href="selectionB.html">Solution B</a>
+              <a href="selectionC.html">Solution C</a>
+            </div>
+          </div>
+          <a href="detaileddesign.html">Detailed Design</a>
+          <a href="prototype.html">Prototype</a>
+        </div>
+      </li>
+      <li>
+        <a href="#">Execution</a>
+        <div class="dropdown-content">
+          <a href="implementation.html">Implementation Plan</a>
+          <a href="cost.html">Cost Analysis</a>
+        </div>
+      </li>
+      <li>
+        <a href="#">Insights</a>
+        <div class="dropdown-content">
+          <a href="other.html">Other Considerations</a>
+          <a href="recommend.html">Recommendations</a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<div class="hero">
+  <h1>Background</h1>
+  <div class="breadcrumb">
+    <a href="index.html">Home</a> <span class="sep">›</span> Research › Background
+  </div>
+</div>
+
+<main>
+
+<section>
+  <h2>Location & Environmental Context</h2>
+  <p>Saibai Island is situated in the low-lying north-west region of the Torres Strait. Due to its coastal position, the island faces increasing vulnerability to climate change effects such as saltwater intrusion and tidal inundation, both of which seriously threaten freshwater availability.</p>
+  <p>The primary water sources include the central lagoon and household rainwater harvesting systems. However, the high turbidity and potential contamination of these sources indicate pressing water quality challenges.</p>
+</section>
+
+<section>
+  <h2>Community & Infrastructure Challenges</h2>
+  <p>Saibai’s remote location makes logistics difficult, increasing costs and complexity for maintenance and infrastructure delivery. These limitations affect both the local community and the Torres Strait Island Regional Council (TSIRC), which oversees water management operations.</p>
+  <div class="grid">
+    <div class="card">
+      <h3>Public Health Impact</h3>
+      <p>Low-quality water increases the likelihood of waterborne diseases, directly affecting community health and wellbeing.</p>
+    </div>
+    <div class="card">
+      <h3>Energy Use</h3>
+      <p>Residents rely on boiling water for disinfection — a safe but energy-intensive method that raises household expenses.</p>
+    </div>
+    <div class="card">
+      <h3>Trust & Reliability</h3>
+      <p>Inconsistent supply quality reduces public confidence in TSIRC’s water systems and management strategies.</p>
+    </div>
+  </div>
+</section>
+
+<section class="callout">
+  <p>The new regulatory standard requires potable water turbidity to remain below <strong>1 NTU</strong>. Yet the current system achieves only 1–2 NTU, failing to meet this threshold, endangering public health and eroding trust in local water governance.</p>
+</section>
+
+<section>
+  <h2>Technical Assessment</h2>
+  <p>The current media filtration system, using five-micron and one-micron filters, cannot adequately reduce turbidity. Its output remains between 1–2 NTU, showing the need for upgraded filtration technology capable of achieving consistent clarity below the standard.</p>
+  <p>Although lagoon water management exists, efficiency remains low. Water treatment is uniformly applied, leading to resource wastage for non-potable uses. Chlorine disinfection adds further risk, as inconsistent dosing between lagoon and household tanks makes maintaining a uniform standard difficult.</p>
+</section>
+
+<section>
+  <h2>Design Objective</h2>
+  <p>The target design aims to create an efficient, practical, and low-cost system that provides potable water with turbidity below 1 NTU. A dual-source setup will separate potable and non-potable supply, improving efficiency, reducing waste, and ensuring sustainable management by the community.</p>
+</section>
+
+</main>
+
+<footer>© 2025 Team A — Saibai Island Alternative Water Harvesting Project</footer>
+
+<script>
+  // 滚动淡入动画
+  const sections = document.querySelectorAll('section');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.2 });
+
+  sections.forEach(section => observer.observe(section));
+</script>
+
+</body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prototype | Saibai Island Water & Sanitation Project</title>
+<style>
+  :root{--brand:#004d40;--brand-2:#00796b;--bg:#f7faf9;--ink:#1f2937;--muted:#6b7280}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+
+
+  header{background:var(--brand);color:#fff;position:sticky;top:0;z-index:999}
+  nav ul{margin:0;padding:0;display:flex;align-items:center;list-style:none}
+  nav li{position:relative}
+  nav a{display:block;padding:14px 18px;color:#fff;text-decoration:none;font-weight:600}
+  nav li:hover>a{background:var(--brand-2)}
+  .dropdown-content{display:none;position:absolute;background:var(--brand);min-width:220px;box-shadow:0 6px 18px rgba(0,0,0,.18)}
+  .dropdown-content a{padding:12px 14px;display:block;font-weight:500}
+  nav li:hover>.dropdown-content{display:block}
+  .sub-dropdown{position:relative}
+  .sub-dropdown-content{display:none;position:absolute;left:220px;top:0;background:#00695c;min-width:220px;box-shadow:0 6px 18px rgba(0,0,0,.18)}
+  .sub-dropdown:hover .sub-dropdown-content{display:block}
+
+
+  .hero{
+    background:linear-gradient(135deg,rgba(0,77,64,.88),rgba(0,121,107,.72)),
+               url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;
+    color:#fff;padding:70px 24px;text-align:center;position:relative;overflow:hidden
+  }
+  .hero h1{margin:0 0 10px;font-size:32px}
+  .breadcrumb{font-size:14px;opacity:.9}
+  .breadcrumb a{color:#b2dfdb;text-decoration:none}.breadcrumb .sep{margin:0 .4rem;opacity:.7}
+
+
+  .toc-wrap{background:#e8fff9;border-top:1px solid #d0f5ea;border-bottom:1px solid #d0f5ea}
+  .toc{max-width:1100px;margin:0 auto;padding:10px 18px;display:flex;gap:10px;flex-wrap:wrap}
+  .toc a{padding:8px 12px;border-radius:999px;background:#fff;border:1px solid #cde; color:#0b6b6b;text-decoration:none;font-weight:600;transition:.2s}
+  .toc a:hover{background:#f0fffb}
+  .toc a.active{background:#0b6b6b;color:#fff;border-color:#0b6b6b;box-shadow:0 4px 12px rgba(0,0,0,.12)}
+
+  main{max-width:1100px;margin:40px auto;padding:0 18px 60px}
+  section{background:#fff;border-radius:14px;padding:30px;margin-bottom:26px;box-shadow:0 10px 22px rgba(0,0,0,.08)}
+  h2{color:var(--brand);margin:0 0 10px}
+
+  .pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+  .pill{background:#ecfffd;border:1px solid #c7f7ef;color:#065f5b;padding:4px 10px;border-radius:999px;font-size:.85rem}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:30px;align-items:center}
+  figure{margin:0;text-align:center}
+  figure img{width:100%;max-width:520px;border-radius:14px;border:1px solid #ddd;transition:transform .4s ease}
+  figure img:hover{transform:scale(1.03)}
+  figcaption{font-size:.9rem;color:#555;margin-top:6px;font-style:italic}
+
+  .timeline{position:relative;padding-left:24px;margin-top:14px}
+  .timeline:before{content:"";position:absolute;left:10px;top:6px;bottom:6px;width:2px;background:#c8e6c9}
+  .step{position:relative;margin:10px 0;padding-left:10px}
+  .step:before{content:"";position:absolute;left:-11px;top:6px;width:12px;height:12px;border-radius:50%;background:#009688;box-shadow:0 0 0 4px #e6fffb}
+  .step strong{color:#0d6b61}
+
+  .checklist{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:12px}
+  .cl-item{display:flex;gap:10px;align-items:flex-start;border:1px solid #e7f3f2;background:#fcfffe;border-radius:12px;padding:10px 12px;transition:.25s}
+  .cl-bullet{width:20px;height:20px;border-radius:50%;border:2px solid #10b981;display:inline-flex;align-items:center;justify-content:center;color:#10b981;font-size:14px;transform:scale(.7);opacity:.6;transition:.35s cubic-bezier(.2,.7,.3,1)}
+  .cl-item.show .cl-bullet{transform:scale(1);opacity:1;background:#eafff7}
+  .cl-text{font-weight:600;color:#0d6b61}
+
+  .reveal{opacity:0;transform:translateY(10px);transition:opacity .6s ease,transform .6s ease}
+  .show{opacity:1;transform:none}
+
+  .lb{position:fixed;inset:0;background:rgba(0,0,0,.75);display:none;align-items:center;justify-content:center;padding:20px;z-index:9999}
+  .lb img{max-width:96vw;max-height:90vh;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.6);background:#fff}
+  .lb.active{display:flex}
+
+  footer{background:var(--brand);color:#fff;text-align:center;padding:18px;font-size:14px}
+</style>
+</head>
+<body>
+
+
+<header>
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li>
+        <a href="research.html">Research</a>
+        <div class="dropdown-content">
+          <a href="background.html">Background</a>
+          <a href="problem-description.html">Problem Description</a>
+        </div>
+      </li>
+      <li>
+        <a href="#">Design</a>
+        <div class="dropdown-content">
+          <div class="sub-dropdown">
+            <a href="design-options.html">Design Solution Option ▸</a>
+            <div class="sub-dropdown-content">
+              <a href="solution1.html">Solution 1</a>
+              <a href="solution2.html">Solution 2</a>
+              <a href="solution3.html">Solution 3</a>
+            </div>
+          </div>
+          <div class="sub-dropdown">
+            <a href="design-selection.html">Design Selection ▸</a>
+            <div class="sub-dropdown-content">
+              <a href="selectionA.html">Solution A</a>
+              <a href="selectionB.html">Solution B</a>
+              <a href="selectionC.html">Solution C</a>
+            </div>
+          </div>
+          <a href="detaileddesign.html">Detailed Design</a>
+          <a href="prototype.html">Prototype</a>
+        </div>
+      </li>
+      <li>
+        <a href="#">Execution</a>
+        <div class="dropdown-content">
+          <a href="implementation.html">Implementation Plan</a>
+          <a href="cost.html">Cost Analysis</a>
+        </div>
+      </li>
+      <li>
+        <a href="#">Insights</a>
+        <div class="dropdown-content">
+          <a href="other.html">Other Considerations</a>
+          <a href="recommend.html">Recommendations</a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<div class="hero">
+  <h1>Prototype</h1>
+  <p>Visualising and testing our design concepts</p>
+  <div class="breadcrumb">
+    <a href="index.html">Home</a> <span class="sep">›</span> Design <span class="sep">›</span> Prototype
+  </div>
+</div>
+
+
+<div class="toc-wrap">
+  <nav class="toc" aria-label="On-page navigation">
+    <a href="#overview">Overview</a>
+    <a href="#rainwater">Rainwater</a>
+    <a href="#lagoon">Lagoon</a>
+    <a href="#testing">Testing</a>
+    <a href="#results">Results</a>
+  </nav>
+</div>
+
+<main>
+  <section id="overview" class="section reveal">
+    <h2>Overview</h2>
+    <p><strong>Prototyping</strong> helped our team turn ideas into something we could see and test. For the <strong>Saibai Island Water and Sanitation Project</strong>, we created two main diagram-based prototypes — the <strong>Rainwater Collection System</strong> and the <strong>Lagoon Water Filtration System</strong>.</p>
+    <p>The purpose was to visualise our design ideas, check whether each part of the system made sense, and make improvements based on feedback. As the project focused on the design stage rather than construction, using diagrams allowed us to test functionality and logic effectively.</p>
+    <div class="pills" aria-hidden="true">
+      <span class="pill">Diagram prototypes</span>
+      <span class="pill">Function & logic first</span>
+      <span class="pill">Refined by feedback</span>
+    </div>
+  </section>
+
+  <section id="rainwater" class="section reveal">
+    <h2>Rainwater Collection System</h2>
+    <div class="grid">
+      <div>
+        <p>The diagram shows how rainwater is captured from a household roof and stored in a water tank. It includes the roof surface, leaf guard, gutter, PVC pipe, and storage tank.</p>
+        <p>The process is simple: water runs from the roof, passes through the <strong>leaf guard</strong> to remove debris, and flows into the tank. This system was designed for <strong>non-drinking uses</strong> such as toilet flushing and garden watering.</p>
+    
+        <div class="checklist">
+          <div class="cl-item"><span class="cl-bullet">✓</span><span class="cl-text">Flow path checked</span></div>
+          <div class="cl-item"><span class="cl-bullet">✓</span><span class="cl-text">Leaf guard maintenance considered</span></div>
+          <div class="cl-item"><span class="cl-bullet">✓</span><span class="cl-text">Non-potable use cases clarified</span></div>
+        </div>
+      </div>
+      <figure>
+        <a href="#" class="zoom" data-img="images/prototype_rainwater.png">
+          <img src="images/prototype_rainwater.png" alt="Rainwater Collection System prototype">
+        </a>
+        <figcaption>Figure 1. Rainwater Collection System prototype</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="lagoon" class="section reveal">
+    <h2>Lagoon Water Filtration System</h2>
+    <div class="grid">
+      <figure>
+        <a href="#" class="zoom" data-img="images/prototype_lagoon.png">
+          <img src="images/prototype_lagoon.png" alt="Lagoon Water Filtration System prototype">
+        </a>
+        <figcaption>Figure 2. Lagoon Water Filtration System prototype</figcaption>
+      </figure>
+      <div>
+        <p>This model is more complex. It demonstrates how lagoon water can be cleaned through four main steps:</p>
+        <div class="timeline">
+          <div class="step"><strong>1. Swirl Settling Tank:</strong> A mesh screen blocks large particles; the slanted bottom allows sand and mud to settle as sludge.</div>
+          <div class="step"><strong>2. Multi-layer Filter:</strong> Three vertical layers — 5 μm, 1 μm, and activated carbon — remove fine particles and odour.</div>
+          <div class="step"><strong>3. Ultrafiltration Membrane:</strong> Removes micro-impurities and maintains turbidity below <strong>1 NTU</strong>.</div>
+          <div class="step"><strong>4. UV Steriliser:</strong> Kills bacteria and viruses without using chlorine or chemicals.</div>
+        </div>
+
+        <div class="checklist">
+          <div class="cl-item"><span class="cl-bullet">✓</span><span class="cl-text">Layered barriers confirmed</span></div>
+          <div class="cl-item"><span class="cl-bullet">✓</span><span class="cl-text">UF clarity target emphasised</span></div>
+          <div class="cl-item"><span class="cl-bullet">✓</span><span class="cl-text">UV non-chemical finish</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="testing" class="section reveal">
+    <h2>Testing and Refinement</h2>
+    <p>Because our prototypes were digital, we used <strong>simulation and logical testing</strong> instead of physical experiments. We discussed each stage and asked questions such as:</p>
+    <details open>
+      <summary>Would the water flow smoothly without extra power?</summary>
+      <p>Core flow relies on the designed gravity path shown in the diagrams.</p>
+    </details>
+    <details>
+      <summary>Can the filters be easily replaced?</summary>
+      <p>Cartridge layout and access were reviewed to simplify regular replacement.</p>
+    </details>
+    <details>
+      <summary>Is UV disinfection safe for household use?</summary>
+      <p>We checked the position and enclosure notes in the diagram to support safe operation.</p>
+    </details>
+    <p>Feedback from these discussions helped us correct design issues. For example, the <strong>swirl tank</strong> needed a better valve system, and the <strong>filter section</strong> was redesigned for easier maintenance.</p>
+  </section>
+
+  <section id="results" class="section reveal">
+    <h2>Results and Reflection</h2>
+    <ul>
+      <li>The water flow path is logical and can operate under gravity.</li>
+      <li>The filtration stages follow a clear order and achieve water under 1 NTU turbidity.</li>
+      <li>The system uses simple, low-cost materials suitable for Saibai’s environment.</li>
+    </ul>
+    <p>Creating digital prototypes allowed our group to visualise ideas clearly, identify problems early, and improve the design before construction.</p>
+    <p><strong>Overall,</strong> both prototypes are <em>feasible, affordable, and easy to maintain</em>, providing strong evidence that our project can sustainably meet the community’s water needs.</p>
+  </section>
+</main>
+
+<!-- Lightbox -->
+<div class="lb" id="lightbox"><img src="" alt="zoomed image"></div>
+
+<footer>© 2025 Team A — Saibai Island Alternative Water Harvesting Project</footer>
+
+<script>
+// section reveal
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('show')}),{threshold:.18});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// lightbox
+const lb=document.getElementById('lightbox'), lbImg=lb.querySelector('img');
+document.querySelectorAll('a.zoom').forEach(a=>{
+  a.addEventListener('click',e=>{e.preventDefault(); lbImg.src=a.dataset.img; lb.classList.add('active'); lb.focus();});
+});
+lb.addEventListener('click',()=>lb.classList.remove('active'));
+document.addEventListener('keydown',e=>{if(e.key==='Escape')lb.classList.remove('active')});
+
+// on-page TOC scrollspy
+const tocLinks=[...document.querySelectorAll('.toc a')];
+const sections=[...document.querySelectorAll('main section[id]')];
+const spy=new IntersectionObserver(entries=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting){
+      const id='#'+en.target.id;
+      tocLinks.forEach(a=>a.classList.toggle('active', a.getAttribute('href')===id));
+    }
+  });
+},{rootMargin:"-40% 0px -55% 0px",threshold:0});
+sections.forEach(s=>spy.observe(s));
+
+// ✅ 对勾清单入场动画
+const clIO=new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    if(e.isIntersecting){ e.target.classList.add('show'); clIO.unobserve(e.target); }
+  });
+},{threshold:.4});
+document.querySelectorAll('.cl-item').forEach(el=>clIO.observe(el));
+</script>
+</body>
+</html>

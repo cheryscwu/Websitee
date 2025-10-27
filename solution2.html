@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Design Solution Option – Solution 2 | Saibai Island Water & Sanitation Project</title>
+
+<style>
+  :root{--brand:#004d40;--brand-2:#00796b;--bg:#f7faf9;--ink:#102a27}
+  html{scroll-behavior:smooth}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+
+  /* NAV */
+  header{background:var(--brand);color:#fff;position:sticky;top:0;z-index:999}
+  nav ul{margin:0;padding:0;display:flex;align-items:center;list-style:none}
+  nav li{position:relative}
+  nav a{display:block;padding:14px 18px;color:#fff;text-decoration:none;font-weight:700}
+  nav li:hover>a{background:var(--brand-2)}
+  .dropdown-content{display:none;position:absolute;background:var(--brand);min-width:220px;box-shadow:0 6px 18px rgba(0,0,0,.18)}
+  .dropdown-content a{padding:12px 14px;display:block}
+  nav li:hover>.dropdown-content{display:block}
+  .sub-dropdown{position:relative}
+  .sub-dropdown-content{display:none;position:absolute;left:220px;top:0;background:#00695c;min-width:220px;box-shadow:0 6px 18px rgba(0,0,0,.18)}
+  .sub-dropdown:hover .sub-dropdown-content{display:block}
+
+  /* HERO */
+  .hero{
+    background:
+      linear-gradient(135deg,rgba(0,77,64,.88),rgba(0,121,107,.72)),
+      url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;
+    color:#fff;padding:76px 22px;text-align:center
+  }
+  .hero h1{margin:0 0 10px;font-size:34px}
+  .breadcrumb{font-size:14px;opacity:.95}
+  .breadcrumb a{color:#b2dfdb;text-decoration:none}.breadcrumb .sep{margin:0 .4rem;opacity:.7}
+
+  /* MAIN */
+  main{max-width:1100px;margin:40px auto;padding:0 18px 70px}
+  section{background:#fff;border-radius:16px;padding:26px;margin-bottom:26px;box-shadow:0 12px 26px rgba(0,0,0,.08);border:1px solid #e6f2f0}
+  h2{margin:0 0 12px;color:var(--brand)}
+  p{margin:0 0 10px}
+  .callout{border-left:4px solid var(--brand-2);background:#ecfffd;padding:14px 16px;border-radius:10px}
+
+  /* Pills */
+  .pill{display:inline-block;background:#e0f7f5;color:#035f55;border:1px solid #bfece7;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:800;margin-right:8px}
+
+  /* ===== Process Stepper with spacer (robust spacing) ===== */
+  .process-timeline{position:relative;margin-top:12px;padding-left:24px}
+  .process-timeline::before{
+    content:"";position:absolute;left:42px;top:0;bottom:0;width:3px;background:linear-gradient(#bfece7,#8ddfd6);
+    border-radius:3px;opacity:.5
+  }
+  .tstep{position:relative;margin:12px 0 18px 0;list-style:none;background:#fff;border:1px solid #dff0ec;border-radius:14px;padding:16px 20px;
+    box-shadow:0 10px 22px rgba(0,0,0,.06);transition:.25s ease;overflow:hidden}
+  .tstep:hover{transform:translateY(-2px)}
+  .tstep .dot{
+    position:absolute;left:24px;top:22px;width:28px;height:28px;border-radius:999px;background:#0aa69a;color:#fff;font-weight:900;
+    display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 3px #e9fbf8;z-index:2
+  }
+  .tstep .head{display:flex;align-items:center;cursor:pointer;min-height:28px}
+  .tstep .head-content{display:flex;flex-direction:column;margin-left:64px;flex:1}
+  .tstep .title{font-weight:800;color:#0a6b60;margin-right:10px}
+  .tstep .summary{color:#245e59;font-size:0.95rem}
+  .tstep .chev{margin-left:auto;transition:.25s;color:#0aa69a}
+  .tstep.open .chev{transform:rotate(90deg)}
+  .tstep .body{max-height:0;overflow:hidden;transition:max-height .35s ease;margin-top:12px}
+  .tstep.open .body{max-height:260px}
+  .tstep .badges{margin-top:8px;display:flex;flex-wrap:wrap;gap:8px}
+  .tstep .pill{margin-right:0}
+
+  .proc-controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+  .proc-btn{cursor:pointer;border:none;border-radius:10px;padding:9px 12px;font-weight:900;background:#f4fbfa;border:1px solid #cdeee8;color:#0e6e63}
+  .proc-btn:active{transform:translateY(1px)}
+
+  @media (max-width:700px){
+    .tstep .head-content{margin-left:72px}
+    .process-timeline::before{left:46px}
+    .tstep .dot{left:26px}
+  }
+
+  /* Gallery */
+  .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+  figure{margin:0;position:relative;border:1px solid #dff0ec;border-radius:14px;overflow:hidden;background:#f3fbfa}
+  .ph{aspect-ratio:16/10;display:flex;align-items:center;justify-content:center;font-weight:800;color:#0b6f65;opacity:.8}
+  figcaption{padding:10px 12px;background:#ffffff;border-top:1px solid #e7f3f2;font-size:13px}
+
+  /* Wikipedia-style references */
+  sup.ref a{text-decoration:none;color:#0d9488;font-weight:700}
+  sup.ref a:hover{text-decoration:underline}
+  .refs{font-size:0.95rem;line-height:1.6}
+  .refs li{margin:6px 0}
+  .refs a{color:#0f766e;text-decoration:underline}
+  .backlink{font-size:0.9rem;margin-left:6px;color:#0d9488;text-decoration:none}
+  .backlink:hover{text-decoration:underline}
+
+  /* Reveal */
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease, transform .6s ease}
+  .reveal.show{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li>
+        <a href="research.html">Research</a>
+        <div class="dropdown-content">
+          <a href="research.html#background">Background</a>
+          <a href="research.html#problem">Problem Description</a>
+        </div>
+      </li>
+      <li>
+        <a href="#">Design</a>
+        <div class="dropdown-content">
+          <div class="sub-dropdown">
+            <a href="design-options.html">Design Solution Option ▸</a>
+            <div class="sub-dropdown-content">
+              <a href="solution1.html">Solution 1</a>
+              <a href="solution2.html">Solution 2</a>
+              <a href="solution3.html">Solution 3</a>
+            </div>
+          </div>
+          <div class="sub-dropdown">
+            <a href="design-selection.html">Design Selection ▸</a>
+            <div class="sub-dropdown-content">
+              <a href="selectionA.html">Solution A</a>
+              <a href="selectionB.html">Solution B</a>
+              <a href="selectionC.html">Solution C</a>
+            </div>
+          </div>
+          <a href="detaileddesign.html">Detailed Design</a>
+          <a href="prototype.html">Prototype</a>
+        </div>
+      </li>
+      <li>
+        <a href="#">Execution</a>
+        <div class="dropdown-content">
+          <a href="implementation.html">Implementation Plan</a>
+          <a href="cost.html">Cost Analysis</a>
+        </div>
+      </li>
+      <li>
+        <a href="#">Insights</a>
+        <div class="dropdown-content">
+          <a href="other.html">Other Considerations</a>
+          <a href="recommend.html">Recommendations</a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<div class="hero">
+  <h1>Design Solution Option — Solution 2</h1>
+  <div class="breadcrumb">
+    <a href="index.html">Home</a> <span class="sep">›</span> Design <span class="sep">›</span> Solution 2
+  </div>
+</div>
+
+<main>
+
+  <!-- Overview -->
+  <section class="reveal">
+    <h2>Overview</h2>
+    <div class="callout">
+      <p>
+        For this solution, <b>water is collected from the lagoon</b> and passed through the <b>coarse screening</b><sup class="ref" id="ref-1-back"><a href="#ref-1">[1]</a></sup>.  
+        This can remove floating debris and litter from the water flow. Then the waterflow is <b>distributed to each household through the tube system</b>.  
+        The <b>multi-stage filter devices</b> are added at the inlet of each household, and water is <b>disinfected with chlorine</b>.
+      </p>
+      <p style="margin-top:8px">
+        The advantage is that this approach <b>reduces additional centralized treatment infrastructure</b>.  
+        However, <b>residents need to maintain the filtration device themselves and monitor chlorine</b>, which increases the O&amp;M burden.
+      </p>
+    </div>
+    <div style="margin-top:10px">
+      <span class="pill">Uses existing tube network</span>
+      <span class="pill">Lower CapEx centrally</span>
+      <span class="pill">Household O&amp;M required</span>
+      <span class="pill">Chlorine checks</span>
+    </div>
+  </section>
+
+  <!-- Process Stepper -->
+  <section class="reveal">
+    <h2>Process (Lagoon → Household)</h2>
+    <div class="proc-controls">
+      <button class="proc-btn" id="procExpand">Expand all</button>
+      <button class="proc-btn" id="procCollapse">Collapse all</button>
+    </div>
+
+    <ol class="process-timeline">
+      <li class="tstep reveal">
+        <span class="dot">1</span>
+        <div class="head" data-toggle="step">
+          <div class="head-content">
+            <div class="title">Lagoon intake</div>
+            <div class="summary">Raw water drawn from lagoon</div>
+          </div>
+          <span class="chev">▶</span>
+        </div>
+        <div class="body">
+          <p>Abstraction from the lagoon under suitable tide/turbidity windows. Intake flow is conveyed to the coarse screen bay.</p>
+        </div>
+      </li>
+
+      <li class="tstep reveal">
+        <span class="dot">2</span>
+        <div class="head" data-toggle="step">
+          <div class="head-content">
+            <div class="title">Coarse screening</div>
+            <div class="summary">Remove floating debris & litter <sup class="ref"><a href="#ref-1">[1]</a></sup></div>
+          </div>
+          <span class="chev">▶</span>
+        </div>
+        <div class="body">
+          <p>Bar screens / trash racks intercept large solids and plastics to protect downstream pipes and household filters.</p>
+          <div class="badges">
+            <span class="pill">Protects network</span>
+            <span class="pill">Simple O&amp;M</span>
+          </div>
+        </div>
+      </li>
+
+      <li class="tstep reveal">
+        <span class="dot">3</span>
+        <div class="head" data-toggle="step">
+          <div class="head-content">
+            <div class="title">Distribution</div>
+            <div class="summary">Piped to households via existing tube system</div>
+          </div>
+          <span class="chev">▶</span>
+        </div>
+        <div class="body">
+          <p>Water is conveyed through the community pipework to each dwelling, minimizing new centralized facilities.</p>
+          <div class="badges">
+            <span class="pill">Leverages existing assets</span>
+            <span class="pill">Lower central CapEx</span>
+          </div>
+        </div>
+      </li>
+
+      <li class="tstep reveal">
+        <span class="dot">4</span>
+        <div class="head" data-toggle="step">
+          <div class="head-content">
+            <div class="title">Household multi-stage filtration</div>
+            <div class="summary">5 μm → 1 μm → activated carbon (at inlet)</div>
+          </div>
+          <span class="chev">▶</span>
+        </div>
+        <div class="body">
+          <p>Each house installs a compact train (5 μm &rarr; 1 μm &rarr; carbon) to polish turbidity and taste/odor right before use.</p>
+          <div class="badges">
+            <span class="pill">Point-of-entry control</span>
+            <span class="pill">Improved taste</span>
+          </div>
+        </div>
+      </li>
+
+      <li class="tstep reveal">
+        <span class="dot">5</span>
+        <div class="head" data-toggle="step">
+          <div class="head-content">
+            <div class="title">Chlorine disinfection</div>
+            <div class="summary">Dose & verify residual</div>
+          </div>
+          <span class="chev">▶</span>
+        </div>
+        <div class="body">
+          <p>Free chlorine provides a final barrier and residual in the small network. Residents perform simple residual checks (DPD kit).</p>
+          <div class="badges">
+            <span class="pill">Final barrier</span>
+            <span class="pill">Residual protection</span>
+          </div>
+        </div>
+      </li>
+
+      <li class="tstep reveal">
+        <span class="dot">6</span>
+        <div class="head" data-toggle="step">
+          <div class="head-content">
+            <div class="title">Point of use</div>
+            <div class="summary">Household taps</div>
+          </div>
+          <span class="chev">▶</span>
+        </div>
+        <div class="body">
+          <p>Water is delivered at taps within each house. User SOPs cover filter change intervals and residual monitoring.</p>
+          <div class="badges">
+            <span class="pill">Simple SOPs</span>
+            <span class="pill">Household ownership</span>
+          </div>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- Images / Sketches -->
+  <section class="reveal">
+    <h2>Images / Sketches</h2>
+    <div class="gallery">
+      <figure>
+        <!-- <img src="images/solution2-intake.jpg" alt="Lagoon intake and coarse screen"> -->
+        <div class="ph">IMAGE 1 – Lagoon intake & coarse screen</div>
+        <figcaption>Intake from lagoon and coarse screen to remove large debris.</figcaption>
+      </figure>
+      <figure>
+        <!-- <img src="images/solution2-house-filter.jpg" alt="Household multi-stage filter"> -->
+        <div class="ph">IMAGE 2 – Household multi-stage filter</div>
+        <figcaption>5 μm → 1 μm → carbon unit installed at point-of-entry.</figcaption>
+      </figure>
+      <figure>
+        <!-- <img src="images/solution2-chlorine.jpg" alt="Chlorine residual test"> -->
+        <div class="ph">IMAGE 3 – Chlorine residual check</div>
+        <figcaption>DPD colorimetric test for free chlorine residual.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- References -->
+  <section class="reveal">
+    <h2>References</h2>
+    <ol class="refs">
+      <li id="ref-1">
+        Water &amp; Wastewater (n.d.). <i>Coarse screening in wastewater: Essential techniques for efficient management.</i>
+        <a href="https://www.waterandwastewater.com/coarse-screening-in-wastewater-essential-techniques-for-efficient-management/" target="_blank" rel="noopener">
+          https://www.waterandwastewater.com/coarse-screening-in-wastewater-essential-techniques-for-efficient-management/
+        </a>
+        <a href="#ref-1-back" class="backlink">↑ Back to text</a>
+      </li>
+    </ol>
+  </section>
+
+</main>
+
+<footer>© 2025 Team A — Saibai Island Alternative Water Harvesting Project</footer>
+
+<script>
+  // Reveal 动效
+  const io = new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('show')),{threshold:.2});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // Stepper 展开/收起逻辑
+  (function(){
+    document.querySelectorAll('[data-toggle="step"]').forEach(head=>{
+      head.addEventListener('click', ()=> head.parentElement.classList.toggle('open'));
+    });
+    const openAll=document.getElementById('procExpand'),
+          closeAll=document.getElementById('procCollapse');
+    if(openAll) openAll.onclick=()=>document.querySelectorAll('.tstep').forEach(s=>s.classList.add('open'));
+    if(closeAll) closeAll.onclick=()=>document.querySelectorAll('.tstep').forEach(s=>s.classList.remove('open'));
+
+    const ioSteps=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('show')),{threshold:.2});
+    document.querySelectorAll('.tstep.reveal').forEach(s=>ioSteps.observe(s));
+  })();
+</script>
+</body>
+</html>
